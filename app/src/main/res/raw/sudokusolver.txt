@@ -1,0 +1,55 @@
+37.	Sudoku Solver
+Write a program to solve a Sudoku puzzle by filling the empty cells. Empty cells are indicated by the character '.'. You may assume that there will be only one unique solution.
+
+DFS: Time ~ O(N!), Space ~ O(1)
+对所有的空格 '.' 逐个填补，从 '1' 选到 '9' 依次尝试，判断：
+此时的 board 是否 valid：用上题的方法 isValid()，区别为这里只要判断当前行、当前列、和当前所在的 subbox 是否含有和自身相同的元素即可，不需要用 Hashtable；
+接下去的 board 是否 solvable：DFS，call recursive method isSolvable()，注意其需要返回 boolean 值，如果联合上面两个条件都成立，则返回 true；如果从 '1' 到 '9' 尝试都不成功，则返回 false。
+
+
+public class Solution {
+    public void solveSudoku(char[][] board) {
+        recursive(board);
+    }
+    
+    public boolean recursive(char[][] board){
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                if(board[i][j]!='.'){
+                    continue;
+                }
+                for(int k=1; k<=9; k++){
+                    board[i][j]=(char)(k+'0');
+                    if(isValidSudoku(board,i,j) && recursive(board)){
+                        return true;
+                    }
+                    board[i][j]='.';
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean isValidSudoku(char[][] board, int row, int col) {
+        for(int i=0; i<9; i++){
+            if(i!=col && board[row][i]==board[row][col]){
+                return false;
+            }
+        }
+        for(int i=0; i<9; i++){
+            if(i!=row && board[i][col]==board[row][col]){
+                return false;
+            }
+        }
+        for(int i=3*(row/3); i<3*(row/3)+3; i++){
+            for(int j = 3*(col/3);j<3*(col/3)+3;j++){
+                if(i!=row && j != col && board[i][j] == board[row][col] ){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+

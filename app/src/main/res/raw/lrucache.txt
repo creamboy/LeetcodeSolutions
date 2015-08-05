@@ -1,0 +1,133 @@
+﻿146.	LRU Cache
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+
+1. Java LinkedHashMap
+
+public class LRUCache {
+    
+    private java.util.LinkedHashMap<Integer, Integer> storage = new java.util.LinkedHashMap<>();
+    private int capacity;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int get(int key) {
+        Integer value = storage.get(key);
+        if(value == null){
+            return -1;
+        }
+        storage.remove(key);
+        storage.put(key, value);
+        return value;
+    }
+
+    public void set(int key, int value) {
+        Integer val = storage.get(key);
+        if (val == null && storage.size() == capacity) {
+            storage.remove(storage.keySet().iterator().next());
+        } else if (val != null) {
+            storage.remove(key);
+        }
+        storage.put(key, value);
+    }
+
+}
+
+2.
+Double LinkedList + Hash Table: Time ~ O(1), Space ~ O(N)
+这道题要求实现两个 method：读 get(key) 和写 set(key, value) ，并满足以下两个要求：
+每次读、写都要将访问过的元素移到最近处 (most recently used)；
+当 cache 达到 capacity ，且要写入新的元素时，删除最远处 (least recently used - LRU) 。
+因此关键需要记录每个元素在 List 中的位置，以便将其移除再添加到 List 的尾部，这可以用一个双向链表，每个节点连接其左右节点 prev 和 next，同时存放 <key, value> pair。
+另外需要一个 Hash Table 记录 <key, Node>，这样每次读写可以实现 constant time。
+在读操作 get(key) 中需实现：
+如果该元素存在，将其对应节点移到队尾 moveToEnd(node)，返回该元素值；
+如果该元素不存在，则返回 -1。
+在写操作 set(key, value) 中需实现：
+如果该元素存在，将其对应节点移到队尾 moveToEnd(node)，修改该元素值；
+如果该元素不存在，首先判断 capacity 是否达到，若达到删除队首的元素 remove(head)及 Hash Table中对应的 entry，然后再将其节点加入队尾 addToEnd(node)。
+注意：在 moveToEnd() 和 remove() 中要判断 node 是否为 head 或 tail，在 addToEnd() 中要判断 List 是否为空；remove() 要注意 List 是否仅含一个元素；moveToEnd() 的部分是由 remove() 和 addToEnd() 组成；在达到 capacity 要 remove(head) 时，要记得 map.remove(head.key)。
+public class LRUCache {
+
+    private class Node {
+        int key, value;
+        Node prev, next;
+        public Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private int capacity;
+    private Map<Integer, Node> map; // store <key, node>
+    private Node head, tail;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        map = new HashMap<Integer, Node>();
+        head = null;
+        tail = null;
+    }
+
+    public int get(int key) {
+        if (!map.containsKey(key))  return -1;
+        else {
+            moveToEnd(map.get(key));
+            return map.get(key).value;
+        }
+    }
+
+    public void set(int key, int value) {
+        if (!map.containsKey(key)) {    // if the node doesn't exist, add a new node to end
+            // remove LRU (first node) if it reaches capacity
+            if (map.size() == capacity) {
+                map.remove(head.key);
+                remove(head);
+            }
+            // add a new node at the end
+            Node node = new Node(key, value);
+            map.put(key, node);
+            addToEnd(node);
+        } else {                        // if the node exists, revise it and move to end
+            map.get(key).value = value;
+            moveToEnd(map.get(key));
+        }
+    }
+
+    private void moveToEnd(Node node) {
+        if (node == tail) {
+            return;
+        } else {    // node is either head or middle node
+            remove(node);
+            addToEnd(node);
+        }
+    }
+
+    private void remove(Node node) {
+        if (node == head) {
+            head = head.next;
+            if (head != null)   head.prev = null;   // List has only one node
+        } else if (node == tail) {
+            tail = tail.prev;
+            tail.next = null;
+        } else {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
+    }
+
+    private void addToEnd(Node node) {
+        if (head == null) { // List is empty
+            head = node;
+            tail = node;
+        } else {
+            node.prev = tail;
+            tail.next = node;
+            tail = node;
+        }
+    }
+
+}

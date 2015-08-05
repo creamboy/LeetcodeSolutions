@@ -1,0 +1,21 @@
+﻿62.	Unique Paths
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below). The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below). How many possible unique paths are there?
+
+1-d DP（滚动数组）: Time ~ O(M*N), Space ~ O(min{M, N})
+Let d(i, j) be the number of paths from grid[0, 0] (top-left) to grid[i, j].
+d(i, j) = d(i - 1, j) + d(i, j - 1)
+Return d(M - 1, N - 1).
+Use top-down approach.
+
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        int[] res=new int[n];
+        res[0]=1;
+        for(int i=0; i<m; i++){
+            for(int j=1; j<n; j++){
+                res[j]+=res[j-1];
+            }
+        }
+        return res[n-1];
+    }
+}

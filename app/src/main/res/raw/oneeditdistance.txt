@@ -1,0 +1,33 @@
+161 One Edit Distance
+
+Given two strings S and T, determine if they are both one edit distance apart.
+
+Solution
+Time ~ O(N), Space ~ O(1)
+One Edit Distance 有三种情况：
+Append: S = "abcde", T = "abcdeX"
+Modify: S = "abcde", T = "abXde"
+Insert: S = "abcde", T = "abcXde"
+从左右向右扫短的 String，如果字符相同则向前走，循环跳出时先判断是不是到达该 String 的结尾，如果到达且另一个 String 只有一个字符未读，则是 Append case；
+如果没到结尾，则找到不同的 characters，这时有两种情况：
+如果是 Modify case，则两个 String 的长度必须相等，且跳过该字符继续往后扫，其他字符都相同；
+如果是 Insert case，则两个 String 的长度差 1，且跳过长 String 的该字符后，其他字符都相同。
+扫完后判断是否到该 String 的结尾，如果到则表示是上述两种的 case 中的一种，否则则不是。
+
+
+public boolean isOneEditDistance(String s, String t) {
+    int M = s.length(), N = t.length();
+    if (M > N)  return isOneEditDistance(t, s);
+    if (N - M > 1)  return false;
+    
+    int i = 0;
+    while (i < M && s.charAt(i) == t.charAt(i)) i++;
+    if (i == M) return N - M == 1;   // Append case
+    if (M == N) {                    // Modify case
+        i++;
+        while (i < M && s.charAt(i) == t.charAt(i)) i++;
+    } else /* if (N - M == 1) */ {   // Insert case
+        while (i < M && s.charAt(i) == t.charAt(i + 1)) i++;
+    }
+    return i == M;
+}

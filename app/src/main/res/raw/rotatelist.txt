@@ -1,0 +1,30 @@
+﻿61.	Rotate List
+Given a list, rotate the list to the right by k places, where k is non-negative. For example: Given 1->2->3->4->5->NULL and k = 2, return 4->5->1->2->3->NULL.
+
+Two pointers: Time ~ O(N), Space ~ O(1)
+找到倒数第 k 个的做法与 Remove Nth Node From End of List 相同，然后把 curr.next = head，prev.next = null。
+
+public class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head==null || k<=0) return head;
+        ListNode temp=head;
+        ListNode oldTail=temp;
+        int count=0;
+        while(temp!=null){
+            count++;
+            oldTail=temp;
+            temp=temp.next;
+        }
+        k%=count;
+        if(k==0) return head;
+        oldTail.next=head;
+        ListNode newhead=head;
+        ListNode newtail=null;
+        for(int i=0;i<count-k; i++){
+            newtail=newhead;
+            newhead=newhead.next;
+        }
+        newtail.next=null;
+        return newhead;
+    }
+}

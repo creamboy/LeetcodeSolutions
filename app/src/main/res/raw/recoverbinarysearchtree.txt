@@ -1,0 +1,98 @@
+﻿99.	Recover Binary Search Tree
+Two elements of a binary search tree (BST) are swapped by mistake.Recover the tree without changing its structure.
+
+1. Inorder Traversal: Time ~ O(N), Space ~ O(N) Not constant space!
+Store results in a Queue, and find the wrong pair after the recursion.
+public static class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+// Store inorder traversal result in a queue, and find the wrong pair and swap
+private Queue<TreeNode> q = new LinkedList<>();
+
+public void recoverTree(TreeNode root) {
+    inorder(root);  // inorder traversal
+
+    TreeNode first = null, second = null;   // wrong pair
+    if (!q.isEmpty()) {
+        TreeNode prev = q.poll();
+        while (!q.isEmpty()) {
+            TreeNode curr = q.poll();
+            if (prev.val > curr.val) {
+                if (first == null)  {
+                    first = prev;
+                    second = curr;
+                } else {
+                    second = curr;
+                    break;
+                }
+            }
+            prev = curr;
+        }
+    }
+
+    swap(first, second);    // swap the wrong pair (only exchange val)
+}
+
+private void inorder(TreeNode x) {
+    if (x == null)  return;
+    if (x.left != null) inorder(x.left);
+    q.add(x);
+    if (x.right != null) inorder(x.right);
+}
+
+private void swap(TreeNode n1, TreeNode n2) {
+    if (n1 == null || n2 == null)   return;
+    int temp = n1.val;
+    n1.val = n2.val;
+    n2.val = temp;
+}
+
+
+2.Morris Inorder Traversal: Time ~ O(N), Space ~ O(1)
+public class Solution {
+    public void recoverTree(TreeNode root) {
+        TreeNode pre = null;
+        TreeNode first = null, second = null;
+        // Morris Traversal
+        TreeNode temp = null;
+        while(root!=null){
+            if(root.left!=null){
+                // connect threading for root
+                temp = root.left;
+                while(temp.right!=null && temp.right != root)
+                    temp = temp.right;
+                // the threading already exists
+                if(temp.right!=null){
+                    if(pre!=null && pre.val > root.val){
+                        if(first==null){first = pre;second = root;}
+                        else{second = root;}
+                    }
+                    pre = root;
+                    temp.right = null;
+                    root = root.right;
+                }else{
+                    // construct the threading
+                    temp.right = root;
+                    root = root.left;
+                }
+            }else{
+                if(pre!=null && pre.val > root.val){
+                    if(first==null){first = pre;second = root;}
+                    else{second = root;}
+                }
+                pre = root;
+                root = root.right;
+            }
+        }
+        // swap two node values;
+        if(first!= null && second != null){
+            int t = first.val;
+            first.val = second.val;
+            second.val = t;
+        }
+    }
+}
+

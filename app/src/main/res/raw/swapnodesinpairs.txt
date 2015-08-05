@@ -1,0 +1,23 @@
+24.	Swap Nodes in Pairs
+Given a linked list, swap every two adjacent nodes and return its head. For example, Given 1->2->3->4, you should return the list as 2->1->4->3. Your algorithm should use only constant space. You may not modify the values in the list, only nodes itself can be changed.
+
+Time ~ O(N), Space ~ O(1)
+设 prev 和 curr 为一前一后相邻的两个 pointer，将 curr.next 移到 prev 之后，然后将 prev 和 curr 前移 (prev = curr; curr = curr.next)。
+
+public class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if(head==null||head.next==null) return head;
+        ListNode newhead=new ListNode(0);
+        newhead.next=head;
+        ListNode curr=newhead;
+        while(curr.next!=null && curr.next.next!=null){
+            ListNode n1=curr.next;
+            ListNode n2=curr.next.next;
+            n1.next=n2.next;
+            n2.next=n1;
+            curr.next=n2;
+            curr=n1;
+        }
+        return newhead.next;
+    }
+}

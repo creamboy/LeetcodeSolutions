@@ -1,0 +1,68 @@
+133.	Clone Graph
+Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
+Definition for undirected graph:
+class UndirectedGraphNode {
+    int label;
+    List<UndirectedGraphNode> neighbors;
+    UndirectedGraphNode(int x) {
+        label = x;
+        neighbors = new ArrayList<UndirectedGraphNode>();
+    }
+}
+
+1. DFS: Time ~ O(|V| + |E|), Space ~ O(|V| + |E|)
+Recursion: call method dfsClone(node)，return 该 node 的 copy；
+遇到每一个 node，create 一个 copy，放入其 label，然后逐个加入其 neighbor w 的copy：
+copy.neighbors.add(dfsClone(w))。
+注：HashMap 记录 key - visited node, value - its copy，避免重复访问
+
+private Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+
+public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    if (node == null)   return null;
+    return dfsClone(node);
+}
+private UndirectedGraphNode dfsClone(UndirectedGraphNode node) {
+    if (map.containsKey(node))  return map.get(node); /* need to add visited node to neighbor list */
+    UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
+    map.put(node, copy);
+    for (UndirectedGraphNode w : node.neighbors)
+       // if (!map.containsKey(w))                /* wrong for self-loop case */
+            copy.neighbors.add(dfsClone(w));
+    return copy;
+}
+
+
+
+2. BFS: Time ~ O(|V| + |E|), Space ~ O(|V| + |E|)
+用一个 Queue 来记录 visited 的 node。每次从 Queue 中取一个 node（Queue 中的 node 已经建立过 copy 并放入 HashMap），访问其所有 neighbor：
+如果 visit 过，则直接将其 copy 从 HashMap 中调出放入 copy 的 neighbor list 里；
+如果没有 visit 过，则要 create 一个 neighbor copy 并加入 node copy 的 neighbor list 里，然后再将该 node neighbor 放入 Queue 中。
+循环直至 Queue 为空。
+注：HashMap 记录 key - visited node, value - its copy，避免在 Queue 中加入重复的 node。
+
+public class Solution {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if(node==null) return null;
+        LinkedList<UndirectedGraphNode> queue=new LinkedList<UndirectedGraphNode>();
+        HashMap<UndirectedGraphNode, UndirectedGraphNode> map=new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+        UndirectedGraphNode newhead=new UndirectedGraphNode(node.label);
+        queue.add(node);
+        map.put(node, newhead);
+        while(!queue.isEmpty()){
+            UndirectedGraphNode curr=queue.pop();
+            List<UndirectedGraphNode> currNeighbors=curr.neighbors;
+            for(UndirectedGraphNode aNeighbor:currNeighbors){
+                if(!map.containsKey(aNeighbor)){
+                    UndirectedGraphNode copy=new UndirectedGraphNode(aNeighbor.label);
+                    map.put(aNeighbor,copy);
+                    map.get(curr).neighbors.add(copy);
+                    queue.add(aNeighbor);
+                }else{
+                    map.get(curr).neighbors.add(map.get(aNeighbor));
+                }
+            }
+        }
+        return newhead;
+    }
+}

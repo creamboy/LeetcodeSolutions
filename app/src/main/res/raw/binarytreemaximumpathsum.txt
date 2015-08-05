@@ -1,0 +1,31 @@
+﻿124.	Binary Tree Maximum Path Sum
+Given a binary tree, find the maximum path sum.The path may start and end at any node in the
+
+Solution
+DFS: Time ~ O(N), Space ~ O(logN)
+注意此题不同于上面两题，path可以从任何节点开始、任何节点结束。
+用maxSum记录最大的path长度，在每个节点求得其左子树和右子树的maxPath = left and rigth，若为正则和该node的val一起相加，在与maxSum比较：
+maxSum = max{x.val + left + right, maxSum};
+递归函数则返回左右子树最大的一侧path，再加上该node的val：
+ret = x.val + max{left, right};
+如果ret为负，则返回0。
+
+
+public class Solution {
+    public int maxPathSum(TreeNode root) {
+        if(root==null) return 0;
+        int[] max=new int[1];
+        max[0]=root.val;
+        helper(root, max);
+        return max[0];
+    }
+    public int helper(TreeNode root, int[] max){
+        if(root==null) return 0;
+        int left=helper(root.left, max);
+        int right=helper(root.right, max);
+        left=left>0? left:0;
+        right=right>0? right:0;
+        max[0]=Math.max(max[0], left+right+root.val);
+        return root.val+Math.max(right, left);
+    }
+}

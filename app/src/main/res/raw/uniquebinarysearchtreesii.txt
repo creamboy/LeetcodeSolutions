@@ -1,0 +1,38 @@
+﻿95.	Unique Binary Search Trees II
+
+DFS: Time ~ O(?), Space ~ O(?)
+Call recursive method that returns all the unique BST's from start to end:
+generate(start, end);
+Given node k (from start to end),
+leftSubs = generate(start, k - 1);
+rightSubs = generate(k + 1, end);
+for (left : leftSubs)
+   for (right : rightSubs)
+      { TreeNode node = new TreeNode(k);  node.left = left;  node.right = right; }
+
+Given n, generate all structurally unique BST's (binary search trees) that store values 1...n.
+public class Solution {
+    public List<TreeNode> generateTrees(int n) {
+        return helper(1 , n);
+    }
+    public List<TreeNode> helper(int s, int e){
+        List<TreeNode> res=new ArrayList<TreeNode>();
+        if(s>e){
+            res.add(null);
+            return res;
+        }
+        for(int i=s; i<=e; i++){
+            List<TreeNode> leftSubtrees = helper(s, i - 1);
+            List<TreeNode> rightSubtrees = helper(i + 1, e);
+            for(TreeNode left: leftSubtrees){
+                for(TreeNode right : rightSubtrees){
+                    TreeNode root=new TreeNode(i);
+                    root.left = left;
+                    root.right = right;
+                    res.add(root);
+                }
+            }
+        }
+        return res;
+    }
+}

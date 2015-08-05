@@ -1,0 +1,32 @@
+46.	Permutations
+Given a collection of numbers, return all possible permutations.
+
+DFS: Time ~ O(N!), Extra Space ~ O(N)
+将元素逐个加入到一个 list 中，如果 list.contains(num[i])，则跳过该元素，继续递归，直至 list 的长度达到 N，即形成一个排列。
+No need to check duplicate lists here, since it assumes no duplicates in the array.
+
+public class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res=new ArrayList<List<Integer>>();
+        boolean[] isUsed = new boolean[nums.length];
+        if(nums.length==0) return res;
+        helper(res, nums, new ArrayList<Integer>(), 0, isUsed);
+        return res;
+    }
+    public void helper(List<List<Integer>> res, int[] nums, List<Integer> item,int pos, boolean[] isUsed){
+        if(pos==nums.length){
+            res.add(new ArrayList<Integer>(item));
+			return;
+        }
+        for(int i=0;i<nums.length;i++){
+            if (!isUsed[i]){
+                item.add(nums[i]);
+                isUsed[i] = true;
+                helper(res, nums, item, pos+1, isUsed);
+                isUsed[i] = false;
+                item.remove(item.size() - 1);
+            }
+
+        }
+    }
+}

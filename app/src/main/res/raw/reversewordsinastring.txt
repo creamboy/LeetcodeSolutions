@@ -1,0 +1,31 @@
+﻿151.
+Given an input string, reverse the string word by word.
+
+
+public class Solution {
+    public String reverseWords(String s) {
+        if(s == null) return "";
+        int i = 0;
+        String res = "";
+        String word = "";
+        while(i<s.length()){
+            char c = s.charAt(i);
+            if(c == ' '){
+                if(res != "" && word != "")
+                    res= word + " " + res;
+                if(res == "" && word != "")
+                    res = word;
+                word = "";
+            }else{
+                word += c;
+            }
+            i++;
+        }
+        if(res != "" && word != "")
+            res = word + " " + res;
+        if(res == "" && word != "")
+            res = word;
+
+        return res;
+    }
+}

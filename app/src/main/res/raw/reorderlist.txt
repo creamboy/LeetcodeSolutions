@@ -1,0 +1,44 @@
+﻿143.	Reorder List
+Given a singly linked list L: L0→L1→…→Ln-1→Ln, reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→… You must do this in-place without altering the nodes' values. For example, Given {1,2,3,4}, reorder it to {1,4,2,3}.
+
+1)Find the second half:
+2)Reverse the second half
+3) Merge the two halves from their heads
+
+public class Solution {
+    public void reorderList(ListNode head) {
+        if(head==null || head.next==null){
+            return;
+        }
+        ListNode slow=head;
+        ListNode fast=head;
+        while(fast !=null &&fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        ListNode mid=slow.next;
+        slow.next=null;
+        // reverse mid
+        if(mid!=null && mid.next!=null){
+            ListNode prev=null;
+            ListNode curr=mid;
+            while(curr!=null){
+                ListNode temp=curr.next;
+                curr.next=prev;
+                prev=curr;
+                curr=temp;
+            }
+            mid=prev;
+        }
+        ListNode p1=head;
+        ListNode p2=mid;
+        while(p2!=null &&p1!=null ){
+            ListNode temp1=p1.next;
+            ListNode temp2=p2.next;
+            p1.next=p2;
+            p2.next=temp1;
+            p1=temp1;
+            p2=temp2;
+        }
+    }
+}

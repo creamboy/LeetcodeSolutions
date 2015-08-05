@@ -1,0 +1,51 @@
+﻿128.	Longest Consecutive Sequence
+Given an unsorted array of integers, find the length of the longest consecutive elements sequence.For example, Given [100, 4, 200, 1, 3, 2], The longest consecutive elements sequence is [1, 2, 3, 4]. Return its length: 4.Your algorithm should run in O(n) complexity.
+
+
+public class Solution {
+    public int longestConsecutive(int[] nums) {
+        int res=0;
+        Map<Integer ,Integer> map=new HashMap<Integer ,Integer>();
+        for(int i=0; i<nums.length; i++){
+            if(map.containsKey(nums[i])) continue;
+            map.put(nums[i], 1);
+            int end=nums[i];
+            int start=nums[i];
+            if(map.containsKey(nums[i]+1)){
+                end=nums[i]+map.get(nums[i]+1);
+            }
+            if(map.containsKey(nums[i]-1)){
+                start=nums[i]-map.get(nums[i]-1);
+            }
+            res=Math.max(res, end-start+1);
+            map.put(start, end-start+1);
+            map.put(end, end-start+1);
+        }
+        return res;
+    }
+}
+
+2. Solution
+Time ~ O(N), Space ~ O(N)
+因为要 O(n) Time，所以不能够 sort。
+方法：用一个 HashSet 存放所有元素。然后对每个元素 i，分别搜索其邻近的左 (i--) 右 (i++) 是否存在 HashSet 中，若找到相应元素则长度加 1，直至搜索不到得到的长度为包含 i 的最长连续序列长度。通过遍历每个元素可找到最长的连续序列长度。
+注意：每次在 HashSet 中找到一个元素后，必须将该元素删除。如果没有这步，之后该元素还可能被再次搜索到，从而导致 O(N^2) Time。
+public int longestConsecutive(int[] num) {
+    Set<Integer> set = new HashSet<>();
+    int max = 0;
+    for (int i : num) set.add(i);
+    for (int i : num) {
+        int len = 1;
+        for (int j = i + 1; set.contains(j); j++) {
+            len++;
+            set.remove(j);
+        }
+        for (int j = i - 1; set.contains(j); j--) {
+            len++;
+            set.remove(j);
+        }
+        set.remove(i);
+        max = Math.max(max, len);
+    }
+    return max;
+}

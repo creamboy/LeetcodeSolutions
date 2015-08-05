@@ -1,0 +1,28 @@
+﻿34.	Search for a Range
+Given a sorted array of integers, find the starting and ending position of a given target value. Your algorithm's runtime complexity must be in the order of O(log n).
+
+Binary Search: Time ~ O(2logN), Space ~ O(1)
+分两步：
+找 start（leftmost match point）：用 if (A[mid] < target) lo = mid + 1;
+找 end（rightmost match point）：用 if (A[mid] > target) hi = mid.
+
+public int[] searchRange(int[] A, int target) {
+    int lo = 0, hi = A.length - 1;
+    while (lo < hi) {
+        int mid = (lo + hi) / 2;
+        if (A[mid] < target)    lo = mid + 1;
+        else                    hi = mid;
+    }
+    int start = lo;
+    if (A[lo] != target)    return new int[]{-1, -1};   // no match is found
+
+    hi = A.length - 1;
+    while (lo < hi) {
+        int mid = (lo + hi) / 2;
+        if (A[mid] > target)    hi = mid;
+        else                    lo = mid + 1;
+    }
+    int end = hi;
+    if (A[hi] != target)    end = hi - 1;  // if no match on hi, need to move backward one step
+    return new int[]{start, end};
+}

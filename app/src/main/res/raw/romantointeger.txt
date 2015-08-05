@@ -1,0 +1,65 @@
+﻿13.	Roman to Integer
+
+1.
+public class Solution {
+    public int romanToInt(String s) {
+        int res = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+            switch (c) {
+            case 'I':
+                res += (res >= 5 ? -1 : 1);
+                break;
+            case 'V':
+                res += 5;
+                break;
+            case 'X':
+                res += 10 * (res >= 50 ? -1 : 1);
+                break;
+            case 'L':
+                res += 50;
+                break;
+            case 'C':
+                res += 100 * (res >= 500 ? -1 : 1);
+                break;
+            case 'D':
+                res += 500;
+                break;
+            case 'M':
+                res += 1000;
+                break;
+        }
+    }
+    return res;
+    }
+}
+
+
+2.
+private static final int[] values = {
+    1000, 500,
+    100, 50,
+    10, 5,
+    1
+};
+
+private static final String[] symbol = {
+    "M", "D",
+    "C", "L",
+    "X", "V",
+    "I"
+};
+
+public int romanToInt(String s) {
+    Map<String, Integer> map = new HashMap<>();
+    for (int i = 0; i < symbol.length; i++)
+        map.put(symbol[i], values[i]);
+
+    int num = 0, prev = 0;
+    for (int i = 0; i < s.length(); i++) {
+        int curr = map.get(s.substring(i, i + 1));
+        num += (curr > prev) ? (curr - 2 * prev) : curr;    // use subtractive rule
+        prev = curr;
+    }
+    return num;
+}

@@ -1,0 +1,68 @@
+150.	Evaluate Reverse Polish Notation
+Evaluate the value of an arithmetic expression in Reverse Polish Notation. Valid operators are +, -, *, /. Each operand may be an integer or another expression. Some examples: ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9 ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
+
+1.
+public class Solution {
+    public int evalRPN(String[] tokens) {
+        if(tokens.length==0) return 0;
+        if(tokens.length==1) return Integer.parseInt(tokens[0]);
+        Stack<Integer> numbers=new Stack<Integer>();
+        int result;
+        int tmp;
+        for(int n=0;n<tokens.length;n++){
+            if(!isOperator(tokens[n])){
+                numbers.push(Integer.parseInt(tokens[n]));
+            }else{
+                if(numbers.size()<2) return Integer.MIN_VALUE;
+                if(tokens[n].equals("+")){
+                    tmp=numbers.pop();
+                    result=numbers.pop()+tmp;
+                }else if(tokens[n].equals("-")){
+                     tmp=numbers.pop();
+                    result=numbers.pop()-tmp;
+                }else if(tokens[n].equals("*")){
+                     tmp=numbers.pop();
+                    result=numbers.pop()*tmp;
+                }else if(tokens[n].equals("/")){
+                     tmp=numbers.pop();
+                    result=numbers.pop()/tmp;
+                }else{
+                    return Integer.MIN_VALUE;
+                }
+                numbers.push(result);
+            }
+        }
+        return numbers.pop();
+    }
+    private static boolean isOperator(String s){
+        s.trim();
+        return s.equals("+")||s.equals("-")||s.equals("*")||s.equals("/");
+    }
+}
+
+2.Improvement: Create an Operator to make the code more maintainable and extensible.
+  interface Operator {
+      int eval(int x, int y);
+  }
+
+  private static final Map<String, Operator> OPERATORS = new HashMap<String, Operator>() {{
+          put("+", new Operator() { public int eval(int x, int y) {return x + y;} });
+          put("-", new Operator() { public int eval(int x, int y) {return x - y;} });
+          put("*", new Operator() { public int eval(int x, int y) {return x * y;} });
+          put("/", new Operator() { public int eval(int x, int y) {return x / y;} });
+  }};
+
+  public int evalRPN(String[] tokens) {
+      Stack<Integer> stack = new Stack<>();
+      for (String s : tokens) {
+          if (OPERATORS.containsKey(s)) {
+              int y = stack.pop();
+              int x = stack.pop();
+              stack.push(OPERATORS.get(s).eval(x, y));
+          } else {
+              stack.push(Integer.parseInt(s));
+          }
+      }
+      return stack.pop();
+
+  }

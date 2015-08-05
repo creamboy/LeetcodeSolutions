@@ -1,0 +1,26 @@
+123.	Best Time to Buy and Sell Stock III
+Say you have an array for which the ith element is the price of a given stock on day i.Design an algorithm to find the maximum profit. You may complete at most two transactions.
+
+
+
+public class Solution {
+    public int maxProfit(int[] prices) {
+        int len=prices.length;
+        if(len<2){
+            return 0;
+        }
+        int[] maxBefore=new int[len];
+        int min=prices[0];
+        for(int i=1; i<len ;i++){
+            min=Math.min(min, prices[i]);
+            maxBefore[i]=Math.max(maxBefore[i-1], prices[i]-min);
+        }
+        int max=prices[len-1];
+        int res=0;
+        for(int i=len-2; i>=0;i--){
+            max=Math.max(max, prices[i]);
+            res=Math.max(res, max-prices[i]+maxBefore[i]);
+        }
+        return res;
+    }
+}

@@ -1,0 +1,18 @@
+﻿80.	Remove Duplicates from Sorted Array
+Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
+Do not allocate extra space for another array, you must do this in place with constant memory.
+
+Use two pointers.
+Time ~ O(N), Space ~ O(1)
+
+public class Solution {
+    public int removeDuplicates(int[] A) {
+        int newl = 0;
+        for(int i = 0; i < A.length; i++) {
+            if (newl == 0 || A[i] != A[i-1]) { //encounter a new element
+                A[newl++] = A[i];
+            }
+        }
+        return newl;
+    }
+}

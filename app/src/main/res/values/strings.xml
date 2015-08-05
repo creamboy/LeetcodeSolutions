@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LeetcodeSolutions</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_two_sum">1. Two Sum</string>
+    <string name="title_activity_add_two_numbers">2. Add Two Numbers</string>
+</resources>

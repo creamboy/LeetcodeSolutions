@@ -1,0 +1,24 @@
+﻿117.	Populating Next Right Pointers in Each Node II
+Follow up for problem "Populating Next Right Pointers in Each Node".
+What if the given tree could be any binary tree? Would your previous solution still work?
+
+
+
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root==null) return;
+        TreeLinkNode newhead=new TreeLinkNode(0);
+        TreeLinkNode prev=newhead;
+        for(TreeLinkNode cur=root; cur!=null; cur=cur.next){
+            if(cur.left!=null){
+                prev.next=cur.left;
+                prev=prev.next;
+            }
+            if(cur.right!=null){
+                prev.next=cur.right;
+                prev=prev.next;
+            }
+        }
+        connect(newhead.next);
+    }
+}

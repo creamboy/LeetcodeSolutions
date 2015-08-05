@@ -1,0 +1,65 @@
+﻿126.	Word Ladder II
+Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:1.Only one letter can be changed at a time2.Each intermediate word must exist in the dictionary
+
+BFS + DFS: Time ~ O(26MN), Space ~ O(26MN)
+这道题比上题复杂一些，上题用 BFS 只要找到 一个 transformation 即可返回 min depth，而这题需要找到所有的 transformations with min depth。
+BFS：用一个 HashMap 存放 key - word, value - depth，如果 current depth >= min depth 则停止搜索，否则循环直到 Queue 为空，这样能把所有的 path 中的 transformation word 放入 HashMap，并标记 depth。
+DFS：根据 HashMap 搜索出所有的 path，从 start 搜到 end；依然是每个单词的逐个字母尝试26个字母替换，如果新词在 HashMap 中，且其 depth 是目前的 current depth + 1，则将其放入 List 中，直至到达 end。
+
+public class Solution {
+    public List<List<String>> findLadders(String start, String end, Set<String> dict) {
+    Queue<String> word = new LinkedList<>();
+    Map<String, Integer> map = new HashMap<>(); // hashmap<word, depth>
+    word.add(start);
+    map.put(start, 1);
+    // BFS: find all the paths of transformation and store the depths in a HashMap
+    int minDepth = Integer.MAX_VALUE;
+    while (!word.isEmpty()) {
+        String currWord = word.poll();
+        int currDepth = map.get(currWord);
+        if (currDepth >= minDepth)   continue;   // skip adding words to queue
+        if (currWord.equals(end))   {
+            minDepth = Math.min(minDepth, currDepth);
+            continue;
+        }
+        for (int i = 0; i < currWord.length(); i++) {
+            char[] currWordArr = currWord.toCharArray();
+            for (char c = 'a'; c <= 'z'; c++) {
+                currWordArr[i] = c;
+                String newWord = new String(currWordArr);
+                if (dict.contains(newWord) && !map.containsKey(newWord)) {
+                    word.add(newWord);
+                    map.put(newWord, currDepth + 1);
+                }
+            }
+        }
+    }
+    // DFS: backtracking from the start to put all the paths into the List
+    List<List<String>> pathSet = new ArrayList<List<String>>();
+    List<String> path = new ArrayList<>();
+    path.add(start);
+    dfs(start, end, map, path, pathSet);
+    return pathSet;
+}
+// DFS (backtracking)
+private void dfs(String start, String end, Map<String, Integer> map, List<String> path, List<List<String>> pathSet) {
+    if (start.equals(end)) {
+        pathSet.add(new ArrayList<String>(path));   // need to initialize a new ArrayList!!
+        return;
+    }
+    int currDepth = map.get(start);
+    for (int i = 0; i < start.length(); i++) {
+        char[] currWordArr = start.toCharArray();
+        for (char c = 'a'; c <= 'z'; c++) {
+            currWordArr[i] = c;
+            String newWord = new String(currWordArr);
+            if (map.containsKey(newWord) && map.get(newWord) == currDepth + 1) {
+                int size = path.size();
+                path.add(newWord);
+                dfs(newWord, end, map, path, pathSet);
+                path.remove(size);
+            }
+        }
+    }
+}
+}

@@ -1,0 +1,62 @@
+﻿23.	Merge k Sorted Lists
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+1, PUT values in PQ
+
+public class Solution {
+    public ListNode mergeKLists(List<ListNode> lists) {
+        PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
+
+        for(ListNode x : lists) {
+            while(x!=null) {
+                heap.add(x.val);
+                x = x.next;
+            }
+        }
+
+        if(heap.isEmpty() || lists.isEmpty()) return null;
+
+        ListNode result = new ListNode(heap.remove());
+        ListNode first = result;
+        int counter = heap.size();
+        for(int i=0; i<counter; i++) {
+            result.next = new ListNode(heap.remove());
+            result = result.next;
+        }
+        return first;
+    }
+}
+
+
+2. Time ~ O(sum_k Nk * logK), Space ~ O(K)
+同时 merge K 个 LinkedLists，从每个 LinkedList 取一个 Node，放入 Priority Queue，每次 pop 出最小的 Node，同时将该 Node 的 next 再放入 PQ 中，直至 PQ 为空。
+// Priority Queue: Time ~ NKlogK, Space ~ K
+public final Comparator<ListNode> PQ_ORDER = new Comparator<ListNode>() {
+    public int compare(ListNode l1, ListNode l2) {
+        if      (l1.val < l2.val)   return -1;
+        else if (l1.val > l2.val)   return 1;
+        else                        return 0;
+    }
+};
+
+public ListNode mergeKLists(List<ListNode> lists) {
+    if (lists.isEmpty())   return null;
+
+    PriorityQueue<ListNode> pq = new PriorityQueue<>(lists.size(), PQ_ORDER);
+    for (ListNode l : lists)
+        if (l != null)
+            pq.add(l);
+
+    ListNode head = new ListNode(0);
+    ListNode p = head;
+
+    while (pq.size() > 0) {
+        ListNode temp = pq.poll();
+        if (temp.next != null)
+            pq.add(temp.next);
+        p.next = temp;
+        p = p.next;
+    }
+
+    return head.next;
+}

@@ -1,0 +1,46 @@
+148.	Sort List
+Sort a linked list in O(n log n) time using constant space complexity.
+
+Time ~ O(NlogN), Space ~ O(1)
+Find the middle point, use two pointers: slow and fast;
+Let left = head, right = slow.next, and recursively mergeSort left and right (return head of sorted list);
+Merge two sorted list: left and right, return head of the merged list.
+
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode fast=head;
+        ListNode slow=head;
+        while(fast.next!=null && fast.next.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+        }
+        fast=slow.next;
+        slow.next=null;
+        slow=sortList(head);
+        fast=sortList(fast);
+        return merge(slow, fast);
+    }
+    public ListNode merge(ListNode slow,ListNode fast){
+        ListNode head=new ListNode(0);
+        ListNode curr=head;
+        while(slow!=null && fast!=null){
+            if(slow.val<fast.val){
+                curr.next=slow;
+                slow=slow.next;
+            }else{
+                curr.next=fast;
+                fast=fast.next;
+            }
+            curr=curr.next;
+        }
+        if(slow!=null){
+            curr.next=slow;
+        }else if(fast!=null){
+            curr.next=fast;
+        }
+        return head.next;
+    }
+}

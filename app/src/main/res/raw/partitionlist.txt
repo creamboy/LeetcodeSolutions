@@ -1,0 +1,73 @@
+86.	Partition List
+Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x. You should preserve the original relative order of the nodes in each of the two partitions. For example, Given 1->4->3->2->5->2 and x = 3, return 1->2->2->4->3->5.
+
+1.
+public class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode newhead = new ListNode(0);
+        ListNode n=newhead;
+        ListNode middle=new ListNode(10000);
+        ListNode m=middle;
+        ListNode temp=head;
+        while(temp!=null) {
+            if(temp.val<x){
+                n.next=temp;
+                n=n.next;
+                temp=temp.next;
+            }else{
+                m.next=temp;
+                m=m.next;
+                temp=temp.next;
+            }
+        }
+        m.next=null;
+        n.next=middle.next;
+        return newhead.next;
+    }
+    
+}
+
+2.
+Time ~ O(N), Space ~ O(1)
+Move last point to the last continuous node < x (last.next >= x);
+Set curr = last, check:
+If curr.next < x, insert curr.next after last, and move last forward (last = last.next), no need to move curr forward here;
+If curr.next >= x, move curr forward (curr = curr.next).
+注意：不要忘记第 1 步，将 curr 对准最近的一个 >= x 的 Node。
+public static class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
+}
+
+// 1->4->3->2->5->2, x = 3
+// l     c  nt
+// 1->2->4->3->5->2
+//    l     c
+public ListNode partition(ListNode head, int x) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+
+    // find the last continuous node that < x
+    ListNode last = dummy;
+    while (last.next != null && last.next.val < x)  last = last.next;
+
+    // find and move the next node that < x
+    ListNode curr = last;
+    while (curr.next != null) {
+        if (curr.next.val < x) {
+            ListNode nt = curr.next.next;
+            curr.next.next = last.next;
+            last.next = curr.next;
+            curr.next = nt;
+            last = last.next;
+        } else {
+            curr = curr.next;
+        }
+    }
+
+    return dummy.next;
+}

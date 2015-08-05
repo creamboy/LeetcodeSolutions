@@ -1,0 +1,52 @@
+76.	Minimum Window Substring
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n). For example, S = "ADOBECODEBANC" T = "ABC" Minimum window is "BANC". Note: If there is no such window in S that covers all characters in T, return the emtpy string "". If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+
+Solution
+
+Time ~ O(M+N), Space ~ O(M) where N = lenS, M = lenT
+先用一个 Hash Table 记录 T 里所有 char 的出现次数。
+然后从左向右扫描 S：
+用两个指针（开头 prev 和结尾 i），i 在前找，到包含了所有 T 的 char 时停下；
+然后往前移动 prev，当碰到一个 T 中的元素，且从 prev 到 i 的 substring 中包含的该元素个数等于 T 中包含该元素的个数时停下（解释如下）；
+此时得到一个符合条件的 substring，比较其长度和之前找到的最小长度，如果更小，则记录该长度和开头位置。
+这里第二步的实现比较技巧，只用了一个 Hash Table：
+在第一步每次找到 T 的 char 时就在 Hash Table 中将其对应的次数减 1，如果次数减为负，则表明从 prev 到 i 的 substring 中包含了多于 T 所包含的 char（比如，T 中只有 1 个 A，但可能目前的 substring 中有 5 个 A），所以当找到所有的 T 的 char后，Hash Table 中所有 key 对应的次数都会小于等于 0。
+接着，在第二步移动 prev 时，每遇到 T 的 char 后，又会将 Hash Table 中的次数再加 1（恢复过程），当某一个 key 的次数由非正变成正时，表明从 prev 到 i 的 substring 中包含的 key 的数量与 T 所包含的一致，也就是说 prev 不能再往前移动，此时得到了以 i 结尾的最短 substring。
+
+
+public String minWindow(String S, String T) {
+    if (S.length() == 0 || T.length() == 0 || S.length() < T.length())  return "";
+
+    Map<Character, Integer> map = new HashMap<>();
+    for (int i = 0; i < T.length(); i++) {
+        char c = T.charAt(i);
+        if (!map.containsKey(c))    map.put(c, 1);
+        else                        map.put(c, map.get(c) + 1);
+    }
+    int count = 0, prev = 0, minStart = 0, minLen = Integer.MAX_VALUE;
+    for (int i = 0; i < S.length(); i++) {
+        char currChar = S.charAt(i);
+        if (map.containsKey(currChar)) {
+            map.put(currChar, map.get(currChar) - 1);
+            if (map.get(currChar) >= 0)  count++;
+            while (count == T.length()) {
+                char prevChar = S.charAt(prev);
+                if (map.containsKey(prevChar)) {
+                    map.put(prevChar, map.get(prevChar) + 1);
+                    if (map.get(prevChar) > 0) {
+                        if (minLen > i - prev + 1) {
+                            minLen = i - prev + 1;
+                            minStart = prev;
+                        }
+                        count--;
+                    }
+                }
+                prev++;
+            }
+        }
+    }
+
+    if (minLen == Integer.MAX_VALUE)    return "";
+    else    return S.substring(minStart, minStart + minLen);
+}
+

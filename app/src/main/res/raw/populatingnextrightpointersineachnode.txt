@@ -1,0 +1,27 @@
+﻿116.	Populating Next Right Pointers in Each Node
+Given a binary tree struct TreeLinkNode { TreeLinkNode *left; TreeLinkNode *right; TreeLinkNode *next; } Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL. Initially, all next pointers are set to NULL.
+
+Solution
+
+两道题可以用一个算法解决。
+
+Time ~ O(N), Space ~ O(1)
+逐行完成connection：
+                         1 -> NULL
+                       /    \
+                     2  -> 3 -> NULL         curr moves from left to right (current level)
+                    /  \      /  \
+dummy -> 4->5->6->7 -> NULL    prev moves from left to right (next level)
+注意：
+prev = dummy 和接下来的 prev.next = curr.left or curr.right 使 dummy停留在next level的开头，然后用 prev = prev.next 将 prev 从左向右移动。
+connect完一行（next level）后，调用 connect(dummy.next) 进入下一行（记得此时 dummy.next 为next level的开头）。
+
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root==null) return;
+        if(root.left!=null) root.left.next=root.right;
+        if(root.right!=null &&root.next!=null) root.right.next=root.next.left;
+        connect(root.left);
+        connect(root.right);
+    }
+}

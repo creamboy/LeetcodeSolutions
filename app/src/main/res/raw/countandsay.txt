@@ -1,0 +1,31 @@
+﻿38.	count-and-say
+The count-and-say sequence is the sequence of integers beginning as follows: 1, 11, 21, 1211, 111221, ...
+
+Time ~ O(N^2), Space ~ O(N)
+找第 N 个 sequence：1 -> 11 -> 21 -> 12 11 -> 11 12 21 -> 31 22 11 -> ...
+结构：count + number
+方法：
+用两个 StringBuilder：str 和 next，根据当前序列 str 生成下一个序列 next。
+判断 str 中的每个 character 和前一个是否相同，若相同要 count++；若不同则 count 置 1，并把 count + number 加入到 next 中（记得循环结束后还要加最后一次）。
+
+public String countAndSay(int n) {
+    if (n <= 0) return null;
+    StringBuilder str = new StringBuilder("1");
+    for (int i = 1; i < n; i++) {
+        StringBuilder next = new StringBuilder();
+        int count = 1;
+        for (int j = 1; j < str.length(); j++) {
+            if (str.charAt(j) == str.charAt(j - 1)) {
+                count++;
+            } else {
+                next.append(count);
+                next.append(str.charAt(j - 1));
+                count = 1;
+            }
+        }
+        next.append(count);
+        next.append(str.charAt(str.length() - 1));
+        str = next;
+    }
+    return str.toString();
+}

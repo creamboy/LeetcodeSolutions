@@ -1,0 +1,35 @@
+﻿118.	Pascal's Triangle
+Given numRows, generate the first numRows of Pascal's triangle.
+
+Solution
+
+Time ~ O(k), Space ~ O(k^2 = 1+2+...+k)
+If col == 0 || col == row, T[row][col] = 1；
+Otherwise, T[row][col] = T[row - 1][col - 1] + T[row - 1][col]
+
+public class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res=new ArrayList<List<Integer>>();
+        if(numRows==0) return res;
+        for(int i=0; i<numRows; i++){
+            List<Integer> level=new ArrayList<Integer>();
+            if(i==0){
+                level.add(1);
+                res.add(level);
+            }else{
+                List<Integer> last=res.get(res.size()-1);
+                for(int k=0; k<=i; k++){
+                    if(k==0 || k==i){
+                        level.add(1);
+                    }else{
+                        level.add(last.get(k-1)+last.get(k));
+                    }
+                }
+                res.add(level);
+            }
+        }
+        return res;
+    }
+}
+
+.

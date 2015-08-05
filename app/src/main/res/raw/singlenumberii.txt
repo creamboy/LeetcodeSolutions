@@ -1,0 +1,56 @@
+137.	Single Number II
+Given an array of integers, every element appears three times except for one. Find that single one.
+
+
+
+public class Solution {
+    public int singleNumber(int[] A) {
+        int ones = 0, twos = 0;
+        for(int i = 0; i < A.length; i++){
+            ones = (ones ^ A[i]) & ~twos;
+            twos = (twos ^ A[i]) & ~ones;
+        }
+    return ones;
+    }
+}
+
+
+State Machine + Bit Manipulation: Time ~ O(N), Space ~ O(1)
+用 x0, x1, x2 表示出现 0 次、1 次、2 次的状态，t 是临时状态用于保存 x2，因为更新 x0 需要用到 x2，即出现 3 次时变为 0 状态。
+public int singleNumber(int[] A) {
+    if (A == null) return 0;
+    int x0 = ~0, x1 = 0, x2 = 0, t;
+    for (int i = 0; i < A.length; i++) {
+        t = x2;
+        x2 = (x1 & A[i]) | (x2 & ~A[i]);
+        x1 = (x0 & A[i]) | (x1 & ~A[i]);
+        x0 = (t & A[i]) | (x0 & ~A[i]);
+    }
+    return x1;
+}
+
+III: Duplicates appear k times, Find the one appear l times
+
+Given an array of integers, every element appears k times except for one that appears l times. Find that one.
+
+Solution
+
+State Machine + Bit Manipulation: Time ~ O(N), Space ~ O(1) 
+The algorithm in II.2 can be generalized to solve this problem:
+x[j] = (x[j - 1] & A[i]) | (x[j] & ~A[i]);
+Return x[l].
+public int singleNumber(int[] A) {
+    int k = 3, l = 1;
+    if (A == null) return 0;
+    int t;
+    int[] x = new int[k];
+    x[0] = ~0;
+    for (int i = 0; i < A.length; i++) {
+        t = x[k-1];
+        for (int j = k-1; j > 0; j--) {
+            x[j] = (x[j-1] & A[i]) | (x[j] & ~A[i]);
+        }
+        x[0] = (t & A[i]) | (x[0] & ~A[i]);
+    }
+    return x[l];
+}

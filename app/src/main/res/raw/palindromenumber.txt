@@ -1,0 +1,17 @@
+9. Palindrome Number
+Determine whether an integer is a palindrome. Do this without extra space.
+  
+注意：这道题不用担心 overflow 的问题，因为 overflow 的数不会是 palindrome。
+
+public class Solution {
+    public boolean isPalindrome(int x) {
+        if(x<0) return false;
+        int reverse=0;
+        int a=x;
+        while(a!=0){
+            reverse=reverse*10+a%10;
+            a=a/10;
+        }
+        return x==reverse;
+    }
+}

@@ -1,0 +1,41 @@
+78.	Subsets
+Given a set of distinct integers, S, return all possible subsets.
+For example,
+If S = [1,2,3], a solution is:
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+
+
+Solution
+注意与 permutation 的区别：
+permutation 可以取 i 之前的元素（所以每次要遍历 array 的所有元素，并跳过元素 i ），而 subset 只能取 i 之后的元素（所以只要遍历 array 中 start 到 end 的元素）。
+DFS: Time ~ O(N!), Space ~ O(N)
+Must sort first (to generate non-descending order subset)
+将元素逐个加入到 list 中，每增加一个即得到一个 subset；取元素 i 加入 List，然后递归从 i + 1 开始，完成后从 List 中删除元素 i，再取元素 i + 1，直至元素取完为止。
+No need to check duplicate lists here, since it assumes no duplicates in the array
+
+Given a set of distinct integers, S, return all possible subsets.
+	public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res= new ArrayList<List<Integer>>();
+        Arrays.sort(nums);
+        helper(res, new ArrayList<Integer>(), 0, nums);
+        return res;
+    }
+    public void helper(List<List<Integer>> res, List<Integer> item, int pos, int [] nums){
+        res.add(new ArrayList<Integer>(item));
+        for(int i=pos; i<nums.length; i++){
+            item.add(nums[i]);
+            helper(res, item, i+1, nums);
+            item.remove(item.size()-1);
+        }
+}
+`

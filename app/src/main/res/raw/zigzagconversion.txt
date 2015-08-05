@@ -1,0 +1,37 @@
+6. ZigZag Conversion
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+P      A     H     N
+A  P  L  S  I   I  G
+Y       I      R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
+string convert(string text, int nRows);
+convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
+
+主元素之间的距离 = 2 * nRows - 2；
+主元素和斜线元素之间的距离 = 主元素间距逐次递减 2（除第一行和最后一行外，其他行每个主元素之后都跟一个斜线元素）。
+注意：该方法不兼容 nRows == 1 的情况，所以必须作为 edge case 单独处理。
+
+public class Solution {
+    public String convert(String s, int numRows) {
+        if(numRows<=1) return s;
+        StringBuilder[] r=new StringBuilder[numRows];
+        for(int i=0;i<numRows;i++){
+            r[i] = new StringBuilder();
+        }
+        int base=numRows+numRows-2;
+        char[] c=s.toCharArray();
+        for(int i=0;i<c.length;i++){
+            int flag=i%base;
+            if(flag<numRows){
+                r[flag].append(c[i]);
+            }else{
+                r[base-flag].append(c[i]);
+            }
+        }
+        for(int i=1;i<r.length;i++){
+            r[0].append(r[i]);
+        }
+        return r[0].toString();
+    }
+}

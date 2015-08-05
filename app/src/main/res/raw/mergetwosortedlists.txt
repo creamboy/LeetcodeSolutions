@@ -1,0 +1,30 @@
+﻿21.	Merge Two Sorted Lists
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+
+Time ~ O(Na + Nb), Space ~ O(1)
+l1 和 l2 分别为两个链表头，返回 merge 后的链表头，要求 no extra space。
+方法：借助 dummy node，依次连接两个链表中更小的 node，任一链表遍历完成时结束，将另一未遍历完的链表接上。
+
+public class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode newhead=new ListNode(0);
+        ListNode temp=newhead;
+        while(l1!=null||l2!=null){
+            if(l1==null || l1.val>l2.val){
+                temp.next=l2;
+                l2=l2.next;
+            }else if(l2==null || l1.val<=l2.val){
+                temp.next=l1;
+                l1=l1.next;
+            }else if(l1.val>l2.val){
+                temp.next=l2;
+                l2=l2.next;
+            }else{
+                temp.next=l1;
+                l1=l1.next;
+            }
+            temp=temp.next;
+        }
+        return newhead.next;
+    }
+}

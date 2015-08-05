@@ -1,0 +1,35 @@
+79.	Word Search
+Given a 2D board and a word, find if the word exists in the grid. The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+DFS: Time ~ O(M^2*N^2), Space ~ O(M*N)
+Time: DFS ~ O(MN = number of edges), loop ~ O(MN)
+DFS letter的上下左右。
+递归停止条件：
+return ture：index 达到 word 的长度；
+return false：越界、遇到之前的 letter、遇到不 match 的 letter
+DFS 返回后要将访问过的 letter unmark掉。
+
+public class Solution {
+    public boolean exist(char[][] board, String word) {
+        char[] c= word.toCharArray();
+        for(int i=0; i<board.length; i++){
+            for(int j=0; j<board[i].length; j++){
+                if(helper(board, c, i, j ,0)) return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean helper(char[][] board, char[] c,int i, int j, int pos){
+        if(pos==c.length) return true;
+        if(i<0 || j<0 || i >= board.length || j >= board[i].length) return false;
+        if (board[i][j] != c[pos]) return false;
+        board[i][j] ^= 256;
+        boolean res = helper(board, c, i, j+1, pos+1)
+        || helper(board, c, i, j-1, pos+1)
+        || helper(board, c, i+1, j, pos+1)
+        || helper(board, c, i-1, j, pos+1);
+        board[i][j] ^= 256;
+        return res;
+    }
+}

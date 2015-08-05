@@ -1,0 +1,33 @@
+﻿96.	Unique Binary Search Trees
+Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+For example,
+Given n = 3, there are a total of 5 unique BST's
+
+Solution
+
+1-d DP: Time ~ O(N^2), Space ~ O(N)
+Let d(i) be the number of unique BST's of size i.
+d(0) = 1;
+d(1) = 1;
+d(2) = d(0) d(1) + d(1) d(0) = 2;
+d(3) = d(0) d(2) + d(1) d(1) + d(2) d(0);
+...
+d(i) = \sum_{k = 0}^{i - 1} d(k) d(i - 1 - k)
+Fill up the table: i from 2 to N, k from 0 to i - 1.
+Return: d(N).
+
+
+Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+public class Solution {
+public class Solution {
+    public int numTrees(int n) {
+        int[] res= new int[n+1];
+        res[0]=1;
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=i; j++){
+                res[i]+=res[j-1]*res[i-j];
+            }
+        }
+        return res[n];
+    }
+}

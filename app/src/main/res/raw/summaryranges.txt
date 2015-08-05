@@ -1,0 +1,34 @@
+228. Summary Ranges
+Given a sorted integer array without duplicates, return the summary of its ranges.
+For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
+
+Solution
+Time ~ O(N), Space ~ O(1)
+比较 curr 和 prev 元素的 difference，如果等于 1，则是连续值；否则则为断开，将之前的 interval 存入 List。
+注意：这里判断不能颠倒顺序（if difference > 1 ... else ...），否则会出错。对如下例子：[-2147483648, 2147483647]，因为 difference 为负，导致判断为一个 range 的错误。
+建议：判断条件时应用明确的情况（e.g., difference == 1)。
+
+public List<String> summaryRanges(int[] nums) {
+    List<String> ranges = new ArrayList<>();
+    int n = nums.length;
+    if (n == 0) return ranges;
+    
+    int from = nums[0], to = nums[0], prev = nums[0];
+    for (int i = 1; i < n; i++) {
+        int curr = nums[i];
+        if (curr - prev == 1) { // continuous element
+            to = curr;
+        } else {                // non-continuous element
+            ranges.add(getRange(from, to));
+            from = curr;
+            to = curr;
+        }
+        prev = curr;
+    }
+    ranges.add(getRange(from, to));
+    return ranges;
+}
+
+private String getRange(int from, int to) {
+    return (from == to) ? Integer.toString(from) : from + "->" + to;
+}

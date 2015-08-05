@@ -1,0 +1,50 @@
+138.	Copy List with Random Pointer
+ A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+Return a deep copy of the list.
+
+ Modify Structure: Time ~ O(3N), Space ~ O(1)
+Insert copy node between its original node and original node's next;
+Assign random pointer of each copied node;
+Restore the original LinkedList and connect the copied node's next.
+
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        if(head==null) return head;
+        RandomListNode origin=head;
+        RandomListNode newhead=new RandomListNode(0);
+        newhead.next=head;
+        while(origin!=null){
+            RandomListNode copy=new RandomListNode(origin.label);
+            copy.next=origin.next;
+            origin.next=copy;
+            origin=copy.next;
+        }
+        origin=head;
+        while(origin!=null){
+            if(origin.random==null){
+                origin=origin.next.next;
+            }else{
+                origin.next.random=origin.random.next;
+                origin=origin.next.next;
+            }
+        }
+        origin=head;
+        RandomListNode temp=newhead;
+        while(origin!=null){
+            temp.next=origin.next;
+            origin.next=origin.next.next;
+            temp=temp.next;
+            origin=origin.next;
+        }
+        return newhead.next;
+    }
+}
+

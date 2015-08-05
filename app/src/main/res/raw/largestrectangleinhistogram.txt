@@ -1,0 +1,30 @@
+﻿84.	Largest Rectangle in Histogram
+
+Stack: Time ~ O(N), Space ~ O(1)
+这道题非常巧妙，只用扫一遍 array。
+方法：对于某一个 bar i，将其左边所有比起低的 bar 入栈，对其左边所有比其高的 bar 计算能形成的最大面积。假设 bar i 左边有一个比其高的 bar j，计算 bar j 能形成的矩形面积时，高度取 bar j 的 height[j]；宽度取 i - stack.peek() - 1（注意这里用 peek() 不用 pop()，不是 bar j 的 index，而是 bar j 左边第一个低于其的 bar 的 index），即在 bar j 的左右两边分别找到第一个低于其的 bar，这样形成 bar j 可以取到的最大矩形。
+实现用一个Stack（栈内的元素只呈升序），每次比较栈顶与当前元素。
+如果栈顶元素 <= 当前元素，则入栈；
+否则合并现有栈，依次往回计算面积（不包括当前元素），直至栈顶元素小于当前元素。
+另外要注意扫到数组结尾时计算面积的边界情况，解决方法是在 array 的结尾加一个 0 元素，比如当只有一个元素 height = {1}，Area = 1。
+
+public class Solution {
+    public int largestRectangleArea(int[] height) {
+        Stack<Integer> stack =new Stack<Integer>();
+        int i=0;
+        int res=0;
+        int [] h= new int[height.length+1];
+        h=Arrays.copyOf(height, height.length+1);
+        while(i<h.length){
+            if(stack.isEmpty() || h[stack.peek()]<=h[i]){
+                stack.push(i++);
+            }else{
+                int t=stack.pop();
+                res= Math.max(res, h[t]* (stack.isEmpty()? i:i-stack.peek()-1));
+            }
+        }
+        
+        return res;
+    }
+}
+

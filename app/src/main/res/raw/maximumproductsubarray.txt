@@ -1,0 +1,52 @@
+152.	Maximum Product Subarray
+Find the contiguous subarray within an array (containing at least one number) which has the largest product.For example, given the array [2,3,-2,4], the contiguous subarray [2,3] has the largest product = 6.
+
+1. Two pass. find max from start and them find max from end
+
+public class Solution {
+    public int maxProduct(int[] nums) {
+        if(nums==null || nums.length==0){
+            return 0;
+        }
+        int res=Integer.MIN_VALUE;
+        int p=1;
+        for(int i=0; i<nums.length; i++){
+            p*=nums[i];
+            res=Math.max(res, p);
+            if(p==0){
+                p=1;
+            }
+        }
+        p=1;
+        for(int i=nums.length-1 ;i>=0; i--){
+            p*=nums[i];
+            res=Math.max(res, p);
+            if(p==0){
+                p=1;
+            }
+        }
+        return res;
+    }
+}
+
+2. 1-d DP: Time ~ O(N), Space ~ O(1)
+   store largest product and smallest product
+   Let f(i) be the largest product of the subarray ending at A[i].
+   Let g(i) be the smallest product of the subarray ending at A[i].
+   f(i) = max{f(i - 1) * A[i], A[i], g(i - 1) * A[i]}
+   g(i) = min{f(i - 1) * A[i], A[i], g(i - 1) * A[i]}
+   Use max and min to store the largest f(i) and the smallest g(i), respectively.
+
+public class Solution {
+    public int maxProduct(int[] nums) {
+        int maxBefore=1, minBefore=1, max=Integer.MIN_VALUE, min=Integer.MAX_VALUE;
+        for(int i=0; i<nums.length; i++){
+            int temp=maxBefore;
+            maxBefore=Math.max(Math.max(maxBefore * nums[i], nums[i]), minBefore * nums[i]);
+            minBefore=Math.min(Math.min(minBefore * nums[i], nums[i]), temp* nums[i]);
+            max=Math.max(maxBefore, max);
+            min=Math.min(minBefore, min);
+        }
+        return max;
+    }
+}

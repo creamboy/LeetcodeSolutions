@@ -1,0 +1,28 @@
+134.	Gas Station
+There are N gas stations along a circular route, where the amount of gas at station i is gas[i]. You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from station i to its next station (i+1). You begin the journey with an empty tank at one of the gas stations. Return the starting gas station's index if you can travel around the circuit once, otherwise return -1.
+
+Solution
+Greedy Algorithm: Time ~ O(N), Space ~ O(1)
+Strategy: every time when total gas - cost (up to station i) < 0, we choose station i + 1 as start point.
+Two observations: start from station 0,
+If total gas - cost < 0, there's no way to travel around the circle;
+If total gas - cost (up to station i) < 0, station 0 ~ i cannot be the start point.
+In the second point, we can easily know that station 0 cannot be the start point.
+So the question is whether we need to check station 1 ~ i again?
+The answer is no. Since the remaining gas (gas[0] - cost[0]) >= 0, there's no way to pass station i if starting at station 1. The same deduction can be made for the rest stations 2 ~ i. Hence, we have to choose station i + 1 as the next start point.
+
+
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int sum=0, total=0, len=gas.length, index=-1;
+        for(int i=0;i<len;i++){
+            sum+=gas[i]-cost[i];
+            total+=gas[i]-cost[i];
+            if(sum<0){
+                index=i;
+                sum=0;
+            }
+        }
+        return total>=0?index+1:-1;
+    }
+}

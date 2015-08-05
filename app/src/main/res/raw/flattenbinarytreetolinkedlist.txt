@@ -1,0 +1,16 @@
+﻿114.	Flatten Binary Tree to Linked List
+Given a binary tree, flatten it to a linked list in-place.
+
+
+public class Solution {
+    public void flatten(TreeNode root) {
+        helper(root, null);
+    }
+    public TreeNode helper(TreeNode root, TreeNode tail){
+        if(root==null) return tail;
+        TreeNode right=helper(root.right, tail);
+        root.right=helper(root.left, right);
+        root.left=null;
+        return root;
+    }
+}

@@ -1,0 +1,29 @@
+﻿206.Reverse Linked List
+
+1. Iteration: Time ~ O(N), Space ~ O(1)
+
+public ListNode reverseList(ListNode head) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+
+    ListNode prev = dummy, curr = head;
+    while (curr != null && curr.next != null) {
+        ListNode nd = curr.next.next;
+        curr.next.next = prev.next;
+        prev.next = curr.next;
+        curr.next = nd;
+    }
+
+    return dummy.next;
+}
+
+2. Recursion: Time ~ O(N), Space ~ O(N)
+
+public ListNode reverseList(ListNode head) {
+    if (head == null || head.next == null)   return head;
+    ListNode restStart = head.next;
+    head.next = null;
+    ListNode restEnd = reverseList(restStart);
+    restStart.next = head;
+    return restEnd;
+}

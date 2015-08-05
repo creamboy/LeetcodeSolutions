@@ -1,0 +1,35 @@
+147.	Insertion Sort List
+Sort a linked list using insertion sort.
+
+Time ~ O(N), Space ~ O(1)
+Move last point to the last continuous node < x (last.next >= x);
+Set curr = last, check:
+If curr.next < x, insert curr.next after last, and move last forward (last = last.next), no need to move curr forward here;
+If curr.next >= x, move curr forward (curr = curr.next).
+注意：不要忘记第 1 步，将 curr 对准最近的一个 >= x 的 Node。
+
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode newhead=new ListNode(Integer.MIN_VALUE);
+        newhead.next=head;
+        while(head.next!=null){
+            if(head.next.val>=head.val){
+                head=head.next;
+            }else{
+                ListNode temp=head.next;
+                head.next=temp.next;
+                temp.next=null;
+                ListNode prev=newhead;
+                while(prev.next.val<temp.val){
+                    prev=prev.next;
+                }
+                temp.next=prev.next;
+                prev.next=temp;
+            }
+        }
+        return newhead.next;
+    }
+}

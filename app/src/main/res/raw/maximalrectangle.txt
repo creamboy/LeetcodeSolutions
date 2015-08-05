@@ -1,0 +1,93 @@
+﻿85.	Maximal Rectangle
+Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+
+
+1 brutal force
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        int m = matrix.length;
+        int n = m == 0 ? 0 : matrix[0].length;
+        int maxArea = 0;
+        for(int i = 0; i < m; i++){//row
+            for(int j = 0; j < n; j++){//col
+                if(matrix[i][j] == '1'){
+                    int area = maxRectangle(matrix, i, j);
+                    if(area > maxArea) maxArea = area;
+                }
+            }
+        }
+        return maxArea;
+    }
+    private int maxRectangle(char[][] matrix, int row, int col) {
+        int minWidth = Integer.MAX_VALUE;
+        int maxArea = 0;
+        for (int i = row; i < matrix.length && matrix[i][col] == '1'; i++) {
+            int width = 0;
+            while (col + width < matrix[row].length && matrix[i][col + width] == '1') {
+                width++;
+            }
+            if (width < minWidth) {
+                minWidth = width;
+            }
+            int area = minWidth * (i - row + 1);
+            if (area > maxArea)
+                maxArea = area;
+        }
+        return maxArea;
+    }
+}
+
+2. Two pointers: Time ~ O(MN)
+用三个array（长度为列长N）：
+L[]：初始全为0，记录rightmost的left index；
+R[]：初始全为N，记录leftmost的right index；
+H[]：初始全为0，记录该列到目前行连续‘1’的个数。
+逐行处理，每一行用right和left两个pointer，从两头找‘1’，再和之前行的左右端（L[]和R[]）比较，更新L[]和R[]：
+L[j] = max{L[j], left}; R[j] = min{R[j], right}
+先处理左端：
+碰到‘1’：更新L[j]和H[j]
+碰到‘0’：更新left = j + 1，H[j]置0，L[j]置0，R[j]置N（下一行开始找新的矩形）
+再处理右端：
+碰到‘1’：更新R[j]，并计算最大面积：maxRect = max{maxRect, H[j] * (R[j] - L[j])}
+碰到‘0’：更新right = j（注意不是 j - 1，因为用R[j] - L[j]）
+public int maximalRectangle(char[][] matrix) {
+    int M = matrix.length;
+    if (M == 0) return 0;
+    int N = matrix[0].length;
+
+    int[] H = new int[N];   // histogram
+    int[] L = new int[N];   // left index (where '1' starts)
+    int[] R = new int[N];   // right index (where '1' ends + 1)
+    Arrays.fill(R, N);
+
+    int maxRect = 0;
+    for (int i = 0; i < M; i++) {
+        int left = 0, right = N;    // left and right indices of '1's in current row
+
+        // calculate L[] in row i
+        for (int j = 0; j < N; j++) {
+            if (matrix[i][j] == '1') {
+                H[j]++;
+                L[j] = Math.max(L[j], left); // compare L[j] with previous row, take the rightmost
+            } else {
+                H[j] = 0;
+                left = j + 1;
+                // edge case: when '0' appears, make L[j] = left and R[j] = right in next row
+                L[j] = 0;
+                R[j] = N;
+            }
+        }
+
+        // calculate R[] and area in row i
+        for (int j = N - 1; j >= 0; j--) {
+            if (matrix[i][j] == '1') {
+                R[j] = Math.min(R[j], right);   // compare R[j] with previous row, take the leftmost
+                maxRect = Math.max(maxRect, H[j] * (R[j] - L[j]));
+            } else {
+                right = j;
+            }
+        }
+    }
+
+    return maxRect;
+}
