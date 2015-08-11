@@ -1,0 +1,50 @@
+﻿166 Fraction to Recurring Decimal
+Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+If the fractional part is repeating, enclose the repeating part in parentheses.
+For example,
+Given numerator = 1, denominator = 2, return "0.5".
+Given numerator = 2, denominator = 1, return "2".
+Given numerator = 2, denominator = 3, return "0.(6)".
+
+Solution
+Time ~ O(N), Space ~ O(N)
+1) First add sign, integer part, and digit;
+2) Then add the fractional part:
+循环小数开始的条件：当 remainder 出现重复，从上一个 reminder 出现的位数到当前为循环的部分。
+用 Hash Table 存放 <remainder, string index>，以便找出开始循环的位置插入 "("。
+注意：这里 numerator 或 denominator 可能为 Integer.MIN_VALUE，取 Math.abs 会 overflow，所以要转换成 long。
+
+public class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if (numerator == 0) return "0";
+        StringBuilder str = new StringBuilder();
+        // add sign
+        if (numerator < 0 ^ denominator < 0) str.append("-");
+        long n = numerator, d = denominator; // use long to avoid overflow of -Integer.MIN_VALUE
+        n = Math.abs(n);    // Math.abs can't be directly used on Integer.MIN_VALUE
+        d = Math.abs(d);
+        // add integer part
+        str.append(n / d);
+        long r = n % d; // remainder, must use long type
+        if(r==0){
+            return str.toString();
+        }else{
+            str.append(".");
+        }
+        // add fractional part
+        Map<Long, Integer> map = new HashMap<>(); // <remainder, position>
+        while (r > 0) {
+            if (map.containsKey(r)) {
+                str.insert(map.get(r), "(");
+                str.append(")");
+                break;
+            } else {
+                map.put(r, str.length());  // no need to -1 on str.length() since r hasn't been added to str
+                r *= 10;
+                str.append(r / d);
+                r = r % d;
+            }
+        }
+        return str.toString();
+    }
+}

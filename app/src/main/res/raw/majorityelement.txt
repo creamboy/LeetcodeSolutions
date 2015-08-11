@@ -1,0 +1,31 @@
+169 Majority Element
+Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.
+You may assume that the array is non-empty and the majority element always exist in the array.
+
+Solution
+
+Moore's voting algorithm: Time ~ O(N), Space ~ O(1)
+A straightforward way is to use a Hashtable, and then iterate through it ( map.entrySet() ) to find the majority element. However it requires extra space.
+Instead, we can do it in-place with one-pass.
+Idea: Since the majority is more than ⌊ n/2 ⌋ times, it can cancel out all the other elements, and the remaining one will be the majority element.
+major: stores the current candidate of the majority element;
+count: three cases:
+if (count == 0), set current candidate to num[i] and set counter to 1;
+if num[i] == major, count++;
+if num[i] != major, count--.
+
+public class Solution {
+    public int majorityElement(int[] nums) {
+        int major = nums[0], count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (count == 0) {
+                major = nums[i];
+                count = 1;
+            } else if (nums[i] == major) {
+                count++;
+            } else
+                count--;
+        }
+        return major;
+    }
+}

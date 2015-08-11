@@ -1,0 +1,51 @@
+173 Binary Search Tree Iterator
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+Calling next() will return the next smallest number in the BST.
+
+Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+
+
+Solution
+Inorder
+Time ~ O(1), Space ~ O(logN)
+constructor： 找到最左节点，recursively call pushLeftChildren()。
+next()： 要先 check hasNext()；
+然后从 Stack 中 pop 一个 node，将其右子树入栈，再返回该 node 的 val。
+hasNext()：Iterator 要注意 call hasNext() 不能影响 next() 的结果。
+用一个Stack，hasNext() 中只需 check 该 Stack 是否为空。
+
+public class BSTIterator {
+    private Stack<TreeNode> stack;
+    public BSTIterator(TreeNode root) {
+        stack=new Stack<TreeNode>();
+        TreeNode cur=root;
+        while(cur!=null){
+            stack.push(cur);
+            cur=cur.left;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        TreeNode node=stack.pop();
+        TreeNode cur=node;
+        if(cur.right!=null){
+            cur=cur.right;
+            while(cur!=null){
+                stack.push(cur);
+                if(cur.left!=null){
+                    cur=cur.left;
+                }else{
+                    break;
+                }
+            }
+        }
+        return node.val;
+    }
+}

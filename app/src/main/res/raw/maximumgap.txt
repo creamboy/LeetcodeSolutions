@@ -1,0 +1,56 @@
+﻿164 Maximum Gap
+Given an unsorted array, find the maximum difference between the successive elements in its sorted form.
+Try to solve it in linear time/space.
+Return 0 if the array contains less than 2 elements.
+You may assume all elements in the array are non-negative integers and fit in the 32-bit signed integer range.
+
+1. Bucket Sort: Time ~ O(2N), Space ~ O(2N)
+Bucket Sort 一般适用于 uniform distribution，虽然这道题不能保证 uniform，但是由于是找 max Gap，不需要 sort 每个 bucket 里的元素，只要记录每个 bucket 的范围 [min, max] 即可，所以仍能保证 linear time。
+方法：
+Construct n - 1 buckets, where the bucket size = ceil((max - min) / (n - 1)).
+Bucket 0: [min, min + size - 1]
+Bucket 1: [min + size, min + 2 * size - 1]
+...
+Bucket n - 2: [min + (n - 2) * size, max]
+Put n - 2 numbers (except min and max) into the n - 1 buckets, and update each bucket's range [minBucket, maxBucket].
+We know that there must be at least one bucket is empty. That means the max gap is on the two sides of empty buckets.
+Go through the n - 1 buckets and find the largest gap between two non-empty buckets.
+
+public class Solution {
+    public int maximumGap(int[] nums) {
+        if(nums==null || nums.length<2){
+            return 0;
+        }
+        int max=nums[0];
+        int min=nums[0];
+        for(int i : nums){
+            max=Math.max(i, max);
+            min=Math.min(i, min);
+        }
+        int gap = (int)Math.ceil((double)(max - min)/(nums.length - 1));
+        int[] bucketsMIN = new int[nums.length - 1];
+        int[] bucketsMAX = new int[nums.length - 1];
+        Arrays.fill(bucketsMIN, Integer.MAX_VALUE);
+        Arrays.fill(bucketsMAX, Integer.MIN_VALUE);
+        for(int i : nums){
+            if(i==min || i==max){
+                continue;
+            }
+            int index=(i-min)/gap;
+            bucketsMIN[index]=Math.min(i,bucketsMIN[index]);
+            bucketsMAX[index]=Math.max(i, bucketsMAX[index]);
+        }
+        int res=Integer.MIN_VALUE;
+        int previous=min;
+        for(int i=0; i<nums.length-1; i++){
+            if (bucketsMIN[i] == Integer.MAX_VALUE && bucketsMAX[i] == Integer.MIN_VALUE){
+                continue;
+            }
+            res = Math.max(res, bucketsMIN[i] - previous);
+            previous = bucketsMAX[i];
+        }
+        res=Math.max(res, max-previous);
+        return res;
+
+    }
+}
