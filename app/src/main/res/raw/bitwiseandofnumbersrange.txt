@@ -1,0 +1,24 @@
+201 Bitwise AND of numbers range
+Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+For example, given the range [5, 7], you should return 4.
+
+Solution
+
+Bit Manipulation: Time ~ O(N), Space ~ O(1)
+The only bits that will be 1 will be bits that are common to the upper bits of A and B. Everything else will have at least one instance of a 0 in that range. So just start from the high order bit downwards. Output the matching bits. As soon as you hit a disagreement between the binaries of A and B (which will be 0 in A and 1 in B) output zeros until you get to the length of B.
+Implementation:
+x = m ^ n 使 m 和 n 相同的高位置 0，到第一个不同的高位置 1（后面的位数无关紧要）；
+将 x 后面的位数都置 1，具体步骤是每次将 x 右移一位（即 s = x >> 1），加到 x 上（即 x | s），直到 s 的 1 全部移完位置，此时得到的 x 从 m 和 n 第一个不同的高位起到末尾都为 1，其他高位都为 0；
+将 x 反转（即 ~x），再和 m & n 做与运算。
+
+public class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+        int x = m ^ n;
+        int s = x >> 1;
+        while (s > 0) {
+            x = x | s;
+            s >>= 1;
+        }
+        return m & n & ~x;
+    }
+}

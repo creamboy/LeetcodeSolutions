@@ -1,0 +1,29 @@
+203 Remove Linked List Elements
+Remove all elements from a linked list of integers that have value val.
+Example
+Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+Return: 1 --> 2 --> 3 --> 4 --> 5
+
+Time ~ O(N), Space ~ O(1)
+用 prev 和 curr 两个 pointer，分两种情况：
+if curr.val == val，则 remove curr，prev 不变，将 curr.next 设为新的 curr；
+if curr.val != val，则 prev 和 curr 前移一位。
+
+public class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode newhead = new ListNode(0);
+        newhead.next = head;
+        ListNode i = newhead;
+        ListNode j = head;
+        while(j != null){
+            if(j.val == val){
+                i.next = i.next.next;
+                j = j.next;
+            }else{
+                i = i.next;
+                j = j.next;
+            }
+        }
+        return newhead.next;
+    }
+}

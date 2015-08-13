@@ -1,0 +1,25 @@
+﻿204 Count Primes
+Count the number of prime numbers less than a non-negative number, n.
+
+Solution
+
+Time ~ O(NlogNlogN), Space ~ O(N)
+用埃氏筛法，基本想法是：从 2 到 sqrt(n)，对每一个数 i，在 2 到 n 的范围内将 i^2 + k * i (k = 0, 1, 2, ...) 筛去（标记为false，即为合数）；最后将所有标记为 true（即质数）的个数统计出来，即为所有质数的个数。
+
+public class Solution {
+    public int countPrimes(int n) {
+        boolean[] notPrime = new boolean[n];
+        for (int i = 2; i <=Math.sqrt(n); i++) {
+            if (notPrime[i] == false) {
+                for (int j = i; i*j < n; j++) {
+                    notPrime[i*j] = true;
+                }
+            }
+        }
+        int count=0;
+        for(int i=2; i<notPrime.length; i++){
+            if(notPrime[i]==false) count++;
+        }
+        return count;
+    }
+}

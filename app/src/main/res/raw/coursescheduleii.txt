@@ -1,0 +1,22 @@
+210.	Course Schedule II
+There are a total of n courses you have to take, labeled from 0 to n - 1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+For example:
+
+2, [[1,0]]
+There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.
+
+2, [[1,0],[0,1]]
+There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+
+Solution
+
+本题判断是否可以按序完成课程，可以把课程 (vertex) 和次序 (edge) 看成一个 directed graph，如果存在 cycle，则无法完成课程。根据 directed graph 的性质：没有 cycle 等同于该 graph 存在 topological order，所以本题即转化为判断是否存在 topological order (即课程完成次序)。
+首先需要实现一个 Digraph 的 class，使用 adjacency lists: List<Integer>[] adj 存放 edges。
+Topological sort 的实现有两种形式，可以用 DFS 或 BFS。本题是判断 topological order 是否存在，而不需要做 topological sort，所以 code 可稍简化。
+
+
