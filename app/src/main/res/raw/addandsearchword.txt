@@ -1,0 +1,85 @@
+211 Add and Search Word-Datastructure design
+
+Design a data structure that supports the following two operations:
+void addWord(word)
+bool search(word)
+search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.
+For example:
+addWord("bad")
+addWord("dad")
+addWord("mad")
+search("pad") -> false
+search("bad") -> true
+search(".ad") -> true
+search("b..") -> true
+Note: You may assume that all words are consist of lowercase letters a-z.
+Hint: You should be familiar with how a Trie works. If not, please work on this problem: Implement Trie (Prefix Tree) first.
+
+Solution
+
+1. Add: Time ~ O(L), Search: Time ~ O(L) to O(RL); Space ~ O(RN) to O(RNL) where R = 26
+Use tire to store dictionary: addWord() and search() are similar to insert() and search() in Trie().
+Only difference is to implement the regular expression '.' here:
+a slight modification on search(): if char c == '.', check R branches; otherwise only check the cth branch.
+public class WordDictionary {
+    private final static int R = 26;    // lowercase letters a through z
+    private TrieNode root;  // root of trie
+
+    // R-way trie node
+    private class TrieNode {
+        boolean eow;
+        TrieNode[] next;
+        public TrieNode() {
+            eow = false;
+            next = new TrieNode[R];
+        }
+    }
+
+    public WordDictionary() {
+        // root = new TrieNode();
+    }
+
+    // Adds a word into the data structure.
+    public void addWord(String word) {
+        root = put(root, word, 0);
+    }
+
+    private TrieNode put(TrieNode x, String str, int d) {
+        if (x == null)  x = new TrieNode();
+        if (d == str.length()) {
+            x.eow = true;
+            return x;
+        }
+        int c = str.charAt(d) - 'a';
+        x.next[c] = put(x.next[c], str, d + 1);
+        return x;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    public boolean search(String word) {
+        TrieNode x = get(root, word, 0);
+        if (x == null)  return false;
+        else            return x.eow;
+    }
+
+    private TrieNode get(TrieNode x, String str, int d) {
+        if (x == null)  return null;
+        if (d == str.length())  return x;
+        if (str.charAt(d) == '.') {         // '.' represents any letter
+            for (int c = 0; c < R; c++) {   // search R branches
+                TrieNode y = get(x.next[c], str, d + 1);
+                if (y != null && y.eow)  return y;
+            }
+            return null;
+        } else {                            // search cth branch
+            int c = str.charAt(d) - 'a';
+            return get(x.next[c], str, d + 1);
+        }
+    }
+}
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary = new WordDictionary();
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");

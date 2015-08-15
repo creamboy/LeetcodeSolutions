@@ -1229,6 +1229,265 @@
                 android:id="@+id/button200"
                 android:onClick="buttonOnClick" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="201 Bitwise AND of Numbers Range"
+                android:id="@+id/button201"
+                android:onClick="buttonOnClick" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="202 Happy Number"
+                android:id="@+id/button202"
+                android:onClick="buttonOnClick" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="203 Remove Linked List Elements"
+                android:id="@+id/button203"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="204 Count Primes"
+                android:id="@+id/button204"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="205 Isomorphic Strings"
+                android:id="@+id/button205"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="206 Reverse Linked List"
+                android:id="@+id/button206"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="207 Course Schedule"
+                android:id="@+id/button207"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="208 Implement Trie"
+                android:id="@+id/button208"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="209 Minimum Size Subarray Sum"
+                android:id="@+id/button209"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="210 Course Schedule II"
+                android:id="@+id/button210"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="211 Add and Search Word"
+                android:id="@+id/button211"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="212 Word Search II"
+                android:id="@+id/button212"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="213 House Robber"
+                android:id="@+id/button213"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="214 Shortest Palindrome"
+                android:id="@+id/button214"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="215 Kth Largest Element in an Array"
+                android:id="@+id/button215"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="216 Combination Sum III"
+                android:id="@+id/button216"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="217 Comtains Duplicate"
+                android:id="@+id/button217"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="218 The Skyline Problem"
+                android:id="@+id/button218"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="219 Contains Duplicate II"
+                android:id="@+id/button219"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="220 Contains Duplicate III"
+                android:id="@+id/button220"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="221 Maximal Square"
+                android:id="@+id/button221"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="222 Count Complete Tree Nodes"
+                android:id="@+id/button222"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="223 Rectangle Area"
+                android:id="@+id/button223"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="224 Basic Calculator"
+                android:id="@+id/button224"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="225 Implement Stack using Queues"
+                android:id="@+id/button225"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="226 Invert Binary Tree"
+                android:id="@+id/button226"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="227 Basic Calculator II"
+                android:id="@+id/button227"
+                android:onClick="buttonOnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="229 Majority Element II"
+                android:id="@+id/button229"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="230 Kth Smallest Element in a BST"
+                android:id="@+id/button230"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="231 Power of Two"
+                android:id="@+id/button231"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="232 Implement Queue using Stacks"
+                android:id="@+id/button232"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="233 Number of Digit One"
+                android:id="@+id/button233"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="234 Palindrome Linked List"
+                android:id="@+id/button234"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="235 Lowest Common Ancestor of a Binary Search Tree"
+                android:id="@+id/button235"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="236 Lowest Common Acestor of a Binary Tree"
+                android:id="@+id/button236"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="237 Delete Node in a Linked List"
+                android:id="@+id/button237"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="238 Product of Array Except Self"
+                android:id="@+id/button238"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="239 Sliding Window Maximum"
+                android:id="@+id/button239"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="240 Search a 2d Matrix II"
+                android:id="@+id/button240"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="241 Different Ways to Add Parentheses"
+                android:id="@+id/button241"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="242 Valid Anagram"
+                android:id="@+id/button242"
+                android:onClick="buttonOnClick" />
+
+
 
         </LinearLayout>
     </ScrollView>

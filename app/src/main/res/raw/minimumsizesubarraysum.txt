@@ -1,0 +1,61 @@
+﻿209 Minimum Size Subarray Sum
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+For example, given the array [2,3,1,2,4,3] and s = 7,
+the subarray [4,3] has the minimal length under the problem constraint.
+
+
+Solution
+
+1. Two Pointers: Time ~ O(N), Space ~ O(1)
+前指针向前扫，当 sum >= s 时向前移动后指针 prev (shrink the subarray)，只到 sum < s 为止，并记录最短的 subarray 的长度。
+public class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        int prev = 0, sum = 0, res = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            while (sum >= s) {
+                res = Math.min(res, i - prev + 1);
+                sum -= nums[prev++];
+            }
+        }
+        return res == Integer.MAX_VALUE ? 0 : res;
+    }
+}
+
+2. Binary Search: Time ~ O(NlogN), Space ~ O(N)
+用一个 array 存放 prefix sum： sum[i] = nums[0] + ... + nums[i - 1] where i = 1 ... n，and sum[0] = 0，
+则任意 subarray sum 可以以 O(1) 得到：sum[j] - sum[i] = num[i] + ... + num[j - 1]。
+具体方法：
+Time ~ O(NlogN)：循环 i = 0 ... n - 1，对于每一个 i 找从 num[i] 开始往后的 min subarray，并记录其 min len（过程如下），循环 n 次后得到最小的 min len。
+Time ~ O(logN)：给定 i，找到最小的 j \in [i + 1, n] 使 num[i] + ... + num[j - 1] >= s，等同于 sum[j] >= sum[i] + s；
+因为所有元素为正，故 sum[j] 是递增的，可使用 Binary Search 得到一个 min len = j - i；
+如果 sum[i] + s > sum[n]，表明从 num[i] 到 num[n - 1] 不可能构成 sum >= s 的 subarray，即 j 不存在，则结束循环。
+
+public class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        int n = nums.length;
+        int[] sum = new int[n + 1];
+        for (int i = 1; i <= n; i++)
+            sum[i] = sum[i - 1] + nums[i - 1];
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            if (sum[i] + s > sum[n]) break;
+            int end = binarySearch(i + 1, n, sum[i] + s, sum);
+            res = Math.min(res, end - i);
+        }
+        return res == Integer.MAX_VALUE ? 0 : res;
+    }
+    private int binarySearch(int lo, int hi, int key, int[] sum) {
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            if (sum[mid] < key){
+                lo = mid + 1;
+            }else if (sum[mid] > key){
+                hi = mid;
+            }else{
+                return mid;
+            }
+        }
+        return lo;
+    }
+}
