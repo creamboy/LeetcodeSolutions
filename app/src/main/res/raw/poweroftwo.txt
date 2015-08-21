@@ -1,0 +1,13 @@
+231 Power of Two
+Given an integer, write a function to determine if it is a power of two.
+
+Solution
+Power of two must be 100...000 (one follows by all zeros).
+Time ~ O(1), Space ~ O(1)
+Use property: n & (n - 1) == 0.
+Example: n = 1000, n - 1 = 111, 1000 & 0111 = 0000.
+Note: Be careful of the edge case when n <= 0.
+
+public boolean isPowerOfTwo(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+}

@@ -21,18 +21,20 @@ public class Solution {
     public String largestNumber(int[] nums) {
         int n = nums.length;
         String[] numStr = new String[n];
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++){
             numStr[i] = Integer.toString(nums[i]);
-            Arrays.sort(numStr, comparator);
-            StringBuilder str = new StringBuilder();
-            // append numStr from right to left
-            for (int i = n - 1; i >= 0; i--)
-                str.append(numStr[i]);
-                // delete leading zeros
-                int start = 0;
-                while (start < str.length() - 1 && str.charAt(start) == '0') {
-                    start++;
-            }
+        }
+        Arrays.sort(numStr, comparator);
+        StringBuilder str = new StringBuilder();
+        // append numStr from right to left
+        for (int i = n - 1; i >= 0; i--){
+           str.append(numStr[i]);
+        }
+        // delete leading zeros
+        int start = 0;
+        while (start < str.length() - 1 && str.charAt(start) == '0') {
+            start++;
+        }
         return str.substring(start);
     }
     public Comparator<String> comparator = new Comparator<String>() {

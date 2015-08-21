@@ -1,0 +1,41 @@
+225 Implement Stack Using Queues
+Implement the following operations of a stack using queues.
+
+push(x) -- Push element x onto stack.
+pop() -- Removes the element on top of the stack.
+top() -- Get the top element.
+empty() -- Return whether the stack is empty.
+
+
+class MyStack {
+    private Queue<Integer> q1 = new LinkedList<>();
+    private Queue<Integer> q2 = new LinkedList<>(); // store the latest element
+
+    // Push element x onto stack.
+    public void push(int x) {
+        q2.add(x);
+        while (q2.size() > 1)
+            q1.add(q2.poll());
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        top();  // if q1 is not empty but q2 is empty, need update q2 first
+        q2.poll();
+    }
+
+    // Get the top element.
+    public int top() {
+        if (q2.isEmpty()) { // move the last element in q1 to q2
+            for (int i = 0; i < q1.size() - 1; i++)
+                q1.add(q1.poll());
+            q2.add(q1.poll());
+        }
+        return q2.peek();
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return q1.isEmpty() && q2.isEmpty();
+    }
+}

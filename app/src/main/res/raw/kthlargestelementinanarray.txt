@@ -1,0 +1,21 @@
+215 Kth Largest Element in an Array
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+For example,
+Given [3,2,1,5,6,4] and k = 2, return 5.
+
+
+Solution
+Time ~ O(K + (N-K)logK), Space ~ O(K)
+对于 large data 或 data stream（N -> infinity）无法 maintain size 为 N 的 heap，可以用 size 为 K 的 heap，仅当新元素大于 heap min 时再 insert。
+public int findKthLargest(int[] nums, int k) {
+    int n = nums.length;
+    PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+    for (int i = 0; i < n; i++) {
+        if (i < k)  pq.add(nums[i]);
+        else if (nums[i] > pq.peek()) {
+            pq.poll();
+            pq.add(nums[i]);
+        }
+    }
+    return pq.poll();
+}

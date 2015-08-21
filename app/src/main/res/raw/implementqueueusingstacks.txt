@@ -1,0 +1,47 @@
+225 Implement Stack Using Queues
+Implement the following operations of a queue using stacks.
+
+push(x) -- Push element x to the back of queue.
+pop() -- Removes the element from in front of queue.
+peek() -- Get the front element.
+empty() -- Return whether the queue is empty.
+
+
+Solution
+
+Time: push() ~ O(1), pop() ~ O(N), top() ~ O(1) and O(N) in worst-case, empty() ~ O(1)
+Space ~ O(N)
+Use two Stacks: push new elements to stack1, and pop old elements from stack2; if stack2 become empty, pop all the elements in stack1 to stack2.
+push(): push elements to stack1;
+pop(): 1) do peek() first. If stack2 is empty, then pop all the elements in stack1 to stack2 (the elements on the top in stack2 are the older ones);
+2) pop the element in stack2.
+peek(): 1) if stack2 is empty, then pop all the elements in stack1 to stack2;
+2) return stack2.peek();
+empty(): MyQueue is empty iff both stack1 and stack2 are empty.
+
+class MyQueue {
+    private Stack<Integer> stack1 = new Stack<>();
+    private Stack<Integer> stack2 = new Stack<>();  // store the old element
+    // Push element x to the back of queue.
+    public void push(int x) {
+        stack1.push(x);
+    }
+    // Removes the element from in front of queue.
+    public void pop() {
+        peek(); // if stack2 is empty, need to update stack2 first
+        stack2.pop();
+    }
+    // Get the front element.
+    public int peek() {
+        if (stack2.isEmpty()) { // move all the elements in stack1 to stack2
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.peek();
+    }
+    // Return whether the queue is empty.
+    public boolean empty() {
+        return stack1.isEmpty() && stack2.isEmpty();
+    }
+}

@@ -1,0 +1,18 @@
+236 Lowest Common Ancestor of a Binary Tree
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+DFS: Time ~ O(N), Space ~ O(N)
+Recursively search for p an q from bottom up, return p or q if founded, otherwise return null.
+If left and right both return null (both left and right subtree doesn't contain p and q), then return null;
+If left returns p or q (left subtree contain p or q) and right returns null (right subtree doesn't contain p and q), then return left;
+If right returns p or q (right subtree contains p or q) and left returns null (left subtree doesn't contain p and q), then return right;
+If both left and right return p or q (both left and right subtree contains p or q), then the root is the LCA.
+
+public class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        return left == null ? right : (right == null ? left : root);
+    }
+}
