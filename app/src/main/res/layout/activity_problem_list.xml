@@ -1200,8 +1200,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="189 Rotate Array"
-                android:id="@+id/button189"
+                android:text="190 Reverse Bits"
+                android:id="@+id/button190"
                 android:onClick="buttonOnClick" />
 
             <Button
@@ -1492,8 +1492,42 @@
                 android:text="242 Valid Anagram"
                 android:id="@+id/button242"
                 android:onClick="buttonOnClick" />
-
-
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="257 Binary Tree Paths"
+                android:id="@+id/button242"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="258 Add Digits"
+                android:id="@+id/button258"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="260 Single Number III"
+                android:id="@+id/button260"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="263 Ugly Number"
+                android:id="@+id/button263"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="264 Ugly Number II"
+                android:id="@+id/button264"
+                android:onClick="buttonOnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="268 Missing Number"
+                android:id="@+id/button268"
+                android:onClick="buttonOnClick" />
 
         </LinearLayout>
     </ScrollView>
