@@ -1,0 +1,19 @@
+﻿242  Valid Anagram
+Given two strings s and t, write a function to determine if t is an anagram of s.
+
+For example,
+s = "anagram", t = "nagaram", return true.
+s = "rat", t = "car", return false.
+
+
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        char[] schar = s.toCharArray();
+        char[] tchar = t.toCharArray();
+        Arrays.sort(schar);
+        Arrays.sort(tchar);
+        s = new String(schar);
+        t = new String(tchar);
+        return s.equals(t);
+    }
+}

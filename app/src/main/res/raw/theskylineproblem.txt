@@ -1,23 +1,69 @@
 218 The Skyline Problem
-Given n non-negative integers a1, a2, ..., an, where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+The geometric information of each building is represented by a triplet of integers [Li, Ri, Hi], where Li and Ri are the x coordinates of the left and right edge of the ith building, respectively, and Hi is its height. It is guaranteed that 0 ≤ Li, Ri ≤ INT_MAX, 0 < Hi ≤ INT_MAX, and Ri - Li > 0. You may assume all buildings are perfect rectangles grounded on an absolutely flat surface at height 0.
 
-Greedy algorithm: Time ~ O(N), Space ~ O(1)
-Use two pointers.
-给定两条 line，容积取决于短的那条。
-由此可知，只需改变短的那条、向长的那条靠拢的方向搜寻，看是否有增加容积的可能（如果是改变长的那条、往短的方向靠拢，是不可能增加容积的）。
-所以用两个 pointer，从两端向中间搜索，直到相遇为止，期间记录最大的容积。
+For instance, the dimensions of all buildings in Figure A are recorded as: [ [2 9 10], [3 7 15], [5 12 12], [15 20 10], [19 24 8] ] .
 
- public class Solution {
-    public int maxArea(int[] height) {
-        if(height.length==0) return 0;
-        if(height.length==1) return height[1];
-        int left=0, right=height.length-1;
-        int max=0;
-        while(left<right){
-            max=Math.max(max, Math.min(height[left], height[right])*(right-left));
-           if(height[left]<height[right]) left++;
-           else right--; 
+The output is a list of "key points" (red dots in Figure B) in the format of [ [x1,y1], [x2, y2], [x3, y3], ... ] that uniquely defines a skyline. A key point is the left endpoint of a horizontal line segment. Note that the last key point, where the rightmost building ends, is merely used to mark the termination of the skyline, and always has zero height. Also, the ground in between any two adjacent buildings should be considered part of the skyline contour.
+
+For instance, the skyline in Figure B should be represented as:[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ].
+
+Notes:
+
+The number of buildings in any input list is guaranteed to be in the range [0, 10000].
+The input list is already sorted in ascending order by the left x position Li.
+The output list must be sorted by the x position.
+There must be no consecutive horizontal lines of equal height in the output skyline. For instance, [...[2 3], [4 5], [7 5], [11 5], [12 7]...] is not acceptable; the three lines of height 5 should be merged into one in the final output as such: [...[2 3], [4 5], [12 7], ...]
+
+
+public class Solution {
+    public List<int[]> getSkyline(int[][] buildings) {
+        if (buildings.length == 0)
+            return new LinkedList<int[]>();
+        return recurSkyline(buildings, 0, buildings.length - 1);
+    }
+
+    private LinkedList<int[]> recurSkyline(int[][] buildings, int p, int q) {
+        if (p < q) {
+            int mid = p + (q - p) / 2;
+            return merge(recurSkyline(buildings, p, mid),
+                    recurSkyline(buildings, mid + 1, q));
+        } else {
+            LinkedList<int[]> rs = new LinkedList<int[]>();
+            rs.add(new int[] { buildings[p][0], buildings[p][2] });
+            rs.add(new int[] { buildings[p][1], 0 });
+            return rs;
         }
-        return max;
+    }
+
+    private LinkedList<int[]> merge(LinkedList<int[]> l1, LinkedList<int[]> l2) {
+        LinkedList<int[]> rs = new LinkedList<int[]>();
+        int h1 = 0, h2 = 0;
+        while (l1.size() > 0 && l2.size() > 0) {
+            int x = 0, h = 0;
+            if (l1.getFirst()[0] < l2.getFirst()[0]) {
+                x = l1.getFirst()[0];
+                h1 = l1.getFirst()[1];
+                h = Math.max(h1, h2);
+                l1.removeFirst();
+            } else if (l1.getFirst()[0] > l2.getFirst()[0]) {
+                x = l2.getFirst()[0];
+                h2 = l2.getFirst()[1];
+                h = Math.max(h1, h2);
+                l2.removeFirst();
+            } else {
+                x = l1.getFirst()[0];
+                h1 = l1.getFirst()[1];
+                h2 = l2.getFirst()[1];
+                h = Math.max(h1, h2);
+                l1.removeFirst();
+                l2.removeFirst();
+            }
+            if (rs.size() == 0 || h != rs.getLast()[1]) {
+                rs.add(new int[] { x, h });
+            }
+        }
+        rs.addAll(l1);
+        rs.addAll(l2);
+        return rs;
     }
 }

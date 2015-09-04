@@ -1308,7 +1308,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="213 House Robber"
+                android:text="213 House Robber II"
                 android:id="@+id/button213"
                 android:onClick="buttonOnClick" />
             <Button
@@ -1453,7 +1453,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="236 Lowest Common Acestor of a Binary Tree"
+                android:text="236 Lowest Common Ancestor of a Binary Tree"
                 android:id="@+id/button236"
                 android:onClick="buttonOnClick" />
             <Button
@@ -1496,7 +1496,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="257 Binary Tree Paths"
-                android:id="@+id/button242"
+                android:id="@+id/button257"
                 android:onClick="buttonOnClick" />
             <Button
                 android:layout_width="match_parent"
