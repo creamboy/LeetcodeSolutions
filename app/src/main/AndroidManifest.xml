@@ -16,10 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".problemDetails"
-            android:label="Problem Details" >
-        </activity>
     </application>
 
 </manifest>

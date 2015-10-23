@@ -7,7 +7,6 @@ HashTable: Time ~ O(N), Space ~ O(N) 用一个 Hash table，key 存放 num[i]，
 
 public class Solution {
     public int[] twoSum(int[] numbers, int target) {
-        if(numbers.length==2) return numbers;
         int[] res=new int[2];
         HashMap<Integer, Integer> map=new HashMap<Integer, Integer>();
         for(int i=0; i<numbers.length;i++){
