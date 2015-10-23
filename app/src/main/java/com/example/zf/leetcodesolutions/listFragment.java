@@ -1,13 +1,11 @@
 package com.example.zf.leetcodesolutions;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.util.Log;
 
 
@@ -30,7 +28,7 @@ public class listFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, getClass().getSimpleName() + ":entered onCreate()");
-        View view =  inflater.inflate(R.layout.activity_problem_list,
+        View view =  inflater.inflate(R.layout.problem_list,
                 container, false);
         return view;
     }

@@ -15,12 +15,12 @@ import java.io.*;
 
 public class detailFragment extends Fragment {
     private static final String TAG = "detailFragment";
-    private TextView mQuoteView = null;
+    private TextView mDetailView = null;
     private String mCurrStr = "";
 
     protected void showText(String str) {
 
-        mQuoteView.setMovementMethod(new ScrollingMovementMethod());
+        mDetailView.setMovementMethod(new ScrollingMovementMethod());
         String message = str;
         String[] s=message.toLowerCase().split(" ");
         String filename="";
@@ -41,7 +41,7 @@ public class detailFragment extends Fragment {
         }
 
         mCurrStr = str;
-        mQuoteView.setText(entireFile);
+        mDetailView.setText(entireFile);
     }
 
     @Override
@@ -63,14 +63,14 @@ public class detailFragment extends Fragment {
 
         // Inflate the layout defined in quote_fragment.xml
         // The last parameter is false because the returned view does not need to be attached to the container ViewGroup
-        return inflater.inflate(R.layout.activity_two_sum, container, false);
+        return inflater.inflate(R.layout.problem_details, container, false);
     }
 
     // Set up some information about the mQuoteView TextView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mQuoteView = (TextView) getActivity().findViewById(R.id.twoSumSolution);
+        mDetailView = (TextView) getActivity().findViewById(R.id.twoSumSolution);
 
     }
     @Override
